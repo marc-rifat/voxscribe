@@ -254,8 +254,13 @@ final class StatusBarController {
         UNUserNotificationCenter.current().add(request)
     }
 
-    /// Opens the settings popover attached to the menu bar icon.
+    /// Opens the unified panel popover on right-click.
     @objc func openSettings() {
+        showContextMenu()
+    }
+
+    /// Shows the unified menu bar panel with all controls.
+    private func showContextMenu() {
         if let existing = settingsPanel, existing.isShown {
             existing.performClose(nil)
             settingsPanel = nil
@@ -265,10 +270,10 @@ final class StatusBarController {
         guard let button = statusItem.button else { return }
 
         let popover = NSPopover()
-        popover.contentSize = NSSize(width: 380, height: 500)
+        popover.contentSize = NSSize(width: 320, height: 350)
         popover.behavior = .transient
         popover.contentViewController = NSHostingController(
-            rootView: SettingsView(
+            rootView: MenuBarPanelView(
                 modelManager: modelManager,
                 audioDeviceManager: audioDeviceManager,
                 settings: settings,
@@ -294,11 +299,9 @@ final class StatusBarController {
                 },
                 onModelDeleted: { [weak self] model in
                     guard let self = self else { return }
-                    // If the deleted model was the active one, unload it
                     if self.transcriptionEngine.loadedModelName == model.name {
                         NSLog("Active model '\(model.name)' was deleted, unloading")
                         self.transcriptionEngine.unloadModel()
-                        // Try to fall back to another downloaded model
                         if let fallback = self.modelManager.smallestDownloadedModel() {
                             self.settings.selectedModelName = fallback.name
                             self.transcriptionEngine.loadModel(fallback) { result in
@@ -309,27 +312,12 @@ final class StatusBarController {
                         }
                     }
                 },
-                onClose: { [weak self] in
-                    self?.settingsPanel?.performClose(nil)
-                    self?.settingsPanel = nil
+                onQuit: {
+                    NSApp.terminate(nil)
                 }
             )
         )
         settingsPanel = popover
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
-    }
-
-    /// Builds and displays the right-click context menu.
-    private func showContextMenu() {
-        let menu = MenuBuilder.buildMenu(
-            clipboardHistory: clipboardHistory,
-            audioDeviceManager: audioDeviceManager,
-            settings: settings,
-            modelManager: modelManager,
-            statusBarController: self
-        )
-        guard let button = statusItem.button else { return }
-        let location = NSPoint(x: 0, y: button.bounds.height + 5)
-        menu.popUp(positioning: nil, at: location, in: button)
     }
 }

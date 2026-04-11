@@ -23,14 +23,18 @@ A macOS menu bar app for local, offline voice-to-text transcription powered by [
 
 ## Setup
 
-1. Open `VoxScribe.xcodeproj` in Xcode
-2. Initialize the whisper.cpp submodule:
+1. Initialize the whisper.cpp submodule:
    ```bash
    git submodule update --init --recursive
    ```
-3. Build and run (`Cmd+R`)
-4. Right-click the menu bar icon > Settings > download a whisper model
-5. Left-click the menu bar icon or press your configured hotkey to start recording
+2. Run the management script:
+   ```bash
+   ./app.sh
+   ```
+3. Select **Build & Install & Start** -- this builds the app, installs it to `/Applications`, and launches it
+4. Grant **Microphone** and **Accessibility** permissions when prompted (System Settings > Privacy & Security)
+5. Right-click the menu bar icon and download a whisper model
+6. Start recording
 
 ## Model Storage
 

@@ -357,6 +357,58 @@ delete_model() {
     fi
 }
 
+update_whisper_cpp() {
+    clear
+    echo ""
+    echo -e "  ${WHITE}Update whisper.cpp${NC}"
+    echo ""
+
+    cd "$PROJECT_DIR"
+
+    # Show current version
+    local current_sha
+    current_sha=$(cd libs/whisper.cpp && git rev-parse --short HEAD 2>/dev/null)
+    echo -e "  Current: ${CYAN}${current_sha:-unknown}${NC}"
+
+    # Fetch latest
+    echo -e "  ${DIM}Fetching latest...${NC}"
+    (cd libs/whisper.cpp && git fetch origin 2>/dev/null)
+
+    local latest_sha
+    latest_sha=$(cd libs/whisper.cpp && git rev-parse --short origin/master 2>/dev/null)
+    echo -e "  Latest:  ${CYAN}${latest_sha:-unknown}${NC}"
+    echo ""
+
+    if [ "$current_sha" = "$latest_sha" ]; then
+        echo -e "  ${GREEN}Already up to date${NC}"
+        pause
+        return
+    fi
+
+    confirm_action "Update whisper.cpp to ${latest_sha}?"
+    if [ $MENU_RESULT -ne 0 ]; then
+        return
+    fi
+
+    echo ""
+    echo -e "  ${CYAN}Updating whisper.cpp...${NC}"
+    (cd libs/whisper.cpp && git pull origin master 2>&1) | tail -5
+    echo ""
+
+    confirm_action "Rebuild the app now?"
+    if [ $MENU_RESULT -eq 0 ]; then
+        build_app
+        confirm_action "Install to /Applications?"
+        if [ $MENU_RESULT -eq 0 ]; then
+            install_app
+        fi
+    fi
+
+    echo ""
+    echo -e "  ${GREEN}whisper.cpp updated to $(cd libs/whisper.cpp && git rev-parse --short HEAD)${NC}"
+    pause
+}
+
 show_logs() {
     clear
     echo ""
@@ -450,6 +502,7 @@ main_options=(
     "Clean & Rebuild"
     "Download Model"
     "Delete Model"
+    "Update whisper.cpp"
     "Show Logs"
     "Status"
     "Exit"
@@ -470,8 +523,9 @@ while true; do
         5) clean_build ;;
         6) download_model ;;
         7) delete_model ;;
-        8) show_logs ;;
-        9) show_status ;;
-        10) clear; exit 0 ;;
+        8) update_whisper_cpp ;;
+        9) show_logs ;;
+        10) show_status ;;
+        11) clear; exit 0 ;;
     esac
 done
