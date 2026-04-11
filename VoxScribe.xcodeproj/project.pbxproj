@@ -1,0 +1,556 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0355F5647ACE264AF0E80F0D /* hbm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94ECC9940A650192FEF842EF /* hbm.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		04C924472A77D7590717E898 /* vec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 44EA668C112F95B1F3B22CB5 /* vec.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		084FAD383F6A410E88AF4822 /* ggml-opt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = CA829B13467298D5DDD8DDDB /* ggml-opt.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		093F48C0DA23CB47AEFA96D0 /* traits.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C336A682B70A320433F406F /* traits.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		183AEECB9BC86A75C5BC35C5 /* ggml-alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = A33DD93AB286EDFACA962626 /* ggml-alloc.c */; settings = {COMPILER_FLAGS = "-std=c11"; }; };
+		19D735E91BAC99EEBFB756AF /* ggml-quants.c in Sources */ = {isa = PBXBuildFile; fileRef = B0AE17411FB757F14E3771B2 /* ggml-quants.c */; settings = {COMPILER_FLAGS = "-std=c11"; }; };
+		3618CBF9B78D26A13BDA084A /* whisper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE5C0D9F074A2956188D46AE /* whisper.cpp */; settings = {COMPILER_FLAGS = "-std=c++17 -DGGML_USE_ACCELERATE -DWHISPER_NO_OPENVINO"; }; };
+		3A0F1A82D859D5828F9A2D74 /* ggml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 874290760FB93FEA531D7385 /* ggml.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		44454EA58EACE86622569A34 /* ggml-backend-reg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D50918514AE011E6E49A831E /* ggml-backend-reg.cpp */; settings = {COMPILER_FLAGS = "-std=c++17 -DGGML_USE_CPU"; }; };
+		45D9B1A38C7F487CBE618DE4 /* gguf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E112AC20434AA51F9A8E0687 /* gguf.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		46AE5F19F520E01F01FF691A /* ggml.c in Sources */ = {isa = PBXBuildFile; fileRef = 771BF43F2370A816CC232FE5 /* ggml.c */; settings = {COMPILER_FLAGS = "-std=c11 -DGGML_USE_ACCELERATE"; }; };
+		5C5DBE305C944A70CB34D83A /* ops.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30DDFDC1B3F282E7988AA2B4 /* ops.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		7242AFAB8E9080125586C97E /* ggml-backend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5EA34CA93355CBDC7D58E63E /* ggml-backend.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		8F195E750A74B4F5FA186E48 /* VoxScribeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84198B5F12056E73B799CAFF /* VoxScribeApp.swift */; };
+		94498094E720DF5C38D62827 /* VoxScribeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4357B8578B1EF2E0F21EF18E /* VoxScribeTests.swift */; };
+		98BA339A3529AE687579A7BD /* ggml-threading.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DDA3A4725557A816E014DD1 /* ggml-threading.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		A7B62A5394EC6365547F61D0 /* quants.c in Sources */ = {isa = PBXBuildFile; fileRef = AB48F9DF54F4914B6D39F2A9 /* quants.c */; settings = {COMPILER_FLAGS = "-std=c11"; }; };
+		AA537E273AF017EC430EF4E2 /* binary-ops.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F83A4C86BAE99A631B91AA19 /* binary-ops.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		B15CCF29671B2896AB7DC5A9 /* unary-ops.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5728A4F570CCBEAF31B33E6 /* unary-ops.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		C63B3866BD1A7C1E85CAA6AD /* ggml-cpu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15BCFA70A54EB119EDCC1195 /* ggml-cpu.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		E77466B21CE08160264E1ACA /* ggml-cpu.c in Sources */ = {isa = PBXBuildFile; fileRef = A33FE72C8B6C2FA130409C68 /* ggml-cpu.c */; settings = {COMPILER_FLAGS = "-std=c11"; }; };
+		F5697823E4604F3A8A12A634 /* repack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A1800C3ADF88EF5CB9CBD741 /* repack.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		762A62DF331449F216159D4C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 155507C8C7D8E4E7D327E55B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3BD43F199A3FEF0F42376684;
+			remoteInfo = VoxScribe;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		009BCE3EC495A8BAC565CF0E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		15BCFA70A54EB119EDCC1195 /* ggml-cpu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-cpu.cpp"; sourceTree = "<group>"; };
+		2DDA3A4725557A816E014DD1 /* ggml-threading.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-threading.cpp"; sourceTree = "<group>"; };
+		30DDFDC1B3F282E7988AA2B4 /* ops.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ops.cpp; sourceTree = "<group>"; };
+		3EB1DBF8B9BEC4BF82B9226C /* VoxScribe-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VoxScribe-Bridging-Header.h"; sourceTree = "<group>"; };
+		4357B8578B1EF2E0F21EF18E /* VoxScribeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoxScribeTests.swift; sourceTree = "<group>"; };
+		44EA668C112F95B1F3B22CB5 /* vec.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vec.cpp; sourceTree = "<group>"; };
+		4C336A682B70A320433F406F /* traits.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = traits.cpp; sourceTree = "<group>"; };
+		5C444F4BC632001F225CF878 /* VoxScribeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoxScribeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5EA34CA93355CBDC7D58E63E /* ggml-backend.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-backend.cpp"; sourceTree = "<group>"; };
+		771BF43F2370A816CC232FE5 /* ggml.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ggml.c; sourceTree = "<group>"; };
+		84198B5F12056E73B799CAFF /* VoxScribeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoxScribeApp.swift; sourceTree = "<group>"; };
+		874290760FB93FEA531D7385 /* ggml.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ggml.cpp; sourceTree = "<group>"; };
+		94ECC9940A650192FEF842EF /* hbm.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = hbm.cpp; sourceTree = "<group>"; };
+		9D226DB472326327E804DA6D /* VoxScribe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VoxScribe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1800C3ADF88EF5CB9CBD741 /* repack.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = repack.cpp; sourceTree = "<group>"; };
+		A33DD93AB286EDFACA962626 /* ggml-alloc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "ggml-alloc.c"; sourceTree = "<group>"; };
+		A33FE72C8B6C2FA130409C68 /* ggml-cpu.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "ggml-cpu.c"; sourceTree = "<group>"; };
+		AB48F9DF54F4914B6D39F2A9 /* quants.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = quants.c; sourceTree = "<group>"; };
+		B0AE17411FB757F14E3771B2 /* ggml-quants.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "ggml-quants.c"; sourceTree = "<group>"; };
+		BE5C0D9F074A2956188D46AE /* whisper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = whisper.cpp; sourceTree = "<group>"; };
+		C5728A4F570CCBEAF31B33E6 /* unary-ops.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "unary-ops.cpp"; sourceTree = "<group>"; };
+		CA829B13467298D5DDD8DDDB /* ggml-opt.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-opt.cpp"; sourceTree = "<group>"; };
+		D50918514AE011E6E49A831E /* ggml-backend-reg.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-backend-reg.cpp"; sourceTree = "<group>"; };
+		E112AC20434AA51F9A8E0687 /* gguf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gguf.cpp; sourceTree = "<group>"; };
+		F83A4C86BAE99A631B91AA19 /* binary-ops.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "binary-ops.cpp"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0D890171A9075C48A3D57309 /* Transcription */ = {
+			isa = PBXGroup;
+			children = (
+				3EB1DBF8B9BEC4BF82B9226C /* VoxScribe-Bridging-Header.h */,
+			);
+			path = Transcription;
+			sourceTree = "<group>";
+		};
+		2224AE5F353B0FA7317FE5FB = {
+			isa = PBXGroup;
+			children = (
+				511B49802AF2CEE7C95CD799 /* ggml-cpu */,
+				71BA8FEBC133CA3757ECD13B /* src */,
+				52322C285351D954A00FBDF7 /* src */,
+				7CB9C0404521BB79023065A3 /* VoxScribe */,
+				C95DCF9CCC2258E3E0BD7DB4 /* VoxScribeTests */,
+				25558BE13427928DC3F4FF40 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		25558BE13427928DC3F4FF40 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9D226DB472326327E804DA6D /* VoxScribe.app */,
+				5C444F4BC632001F225CF878 /* VoxScribeTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		274D7E37F96D0E06B9C1DB68 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				009BCE3EC495A8BAC565CF0E /* Info.plist */,
+				84198B5F12056E73B799CAFF /* VoxScribeApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		511B49802AF2CEE7C95CD799 /* ggml-cpu */ = {
+			isa = PBXGroup;
+			children = (
+				F83A4C86BAE99A631B91AA19 /* binary-ops.cpp */,
+				A33FE72C8B6C2FA130409C68 /* ggml-cpu.c */,
+				15BCFA70A54EB119EDCC1195 /* ggml-cpu.cpp */,
+				94ECC9940A650192FEF842EF /* hbm.cpp */,
+				30DDFDC1B3F282E7988AA2B4 /* ops.cpp */,
+				AB48F9DF54F4914B6D39F2A9 /* quants.c */,
+				A1800C3ADF88EF5CB9CBD741 /* repack.cpp */,
+				4C336A682B70A320433F406F /* traits.cpp */,
+				C5728A4F570CCBEAF31B33E6 /* unary-ops.cpp */,
+				44EA668C112F95B1F3B22CB5 /* vec.cpp */,
+			);
+			name = "ggml-cpu";
+			path = "libs/whisper.cpp/ggml/src/ggml-cpu";
+			sourceTree = "<group>";
+		};
+		52322C285351D954A00FBDF7 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				BE5C0D9F074A2956188D46AE /* whisper.cpp */,
+			);
+			name = src;
+			path = libs/whisper.cpp/src;
+			sourceTree = "<group>";
+		};
+		71BA8FEBC133CA3757ECD13B /* src */ = {
+			isa = PBXGroup;
+			children = (
+				A33DD93AB286EDFACA962626 /* ggml-alloc.c */,
+				D50918514AE011E6E49A831E /* ggml-backend-reg.cpp */,
+				5EA34CA93355CBDC7D58E63E /* ggml-backend.cpp */,
+				CA829B13467298D5DDD8DDDB /* ggml-opt.cpp */,
+				B0AE17411FB757F14E3771B2 /* ggml-quants.c */,
+				2DDA3A4725557A816E014DD1 /* ggml-threading.cpp */,
+				771BF43F2370A816CC232FE5 /* ggml.c */,
+				874290760FB93FEA531D7385 /* ggml.cpp */,
+				E112AC20434AA51F9A8E0687 /* gguf.cpp */,
+			);
+			name = src;
+			path = libs/whisper.cpp/ggml/src;
+			sourceTree = "<group>";
+		};
+		7CB9C0404521BB79023065A3 /* VoxScribe */ = {
+			isa = PBXGroup;
+			children = (
+				274D7E37F96D0E06B9C1DB68 /* App */,
+				0D890171A9075C48A3D57309 /* Transcription */,
+			);
+			path = VoxScribe;
+			sourceTree = "<group>";
+		};
+		C95DCF9CCC2258E3E0BD7DB4 /* VoxScribeTests */ = {
+			isa = PBXGroup;
+			children = (
+				4357B8578B1EF2E0F21EF18E /* VoxScribeTests.swift */,
+			);
+			path = VoxScribeTests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3BD43F199A3FEF0F42376684 /* VoxScribe */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EE1AF25EEEF335A77988EA22 /* Build configuration list for PBXNativeTarget "VoxScribe" */;
+			buildPhases = (
+				28C71E70BCB09D417434D115 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VoxScribe;
+			packageProductDependencies = (
+			);
+			productName = VoxScribe;
+			productReference = 9D226DB472326327E804DA6D /* VoxScribe.app */;
+			productType = "com.apple.product-type.application";
+		};
+		F4270E417D72153DD0289225 /* VoxScribeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B6148D7130E490ED064A6DFD /* Build configuration list for PBXNativeTarget "VoxScribeTests" */;
+			buildPhases = (
+				38335CF0ADCE82E086B3C79D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7F7E78BE52C560861AC8C916 /* PBXTargetDependency */,
+			);
+			name = VoxScribeTests;
+			packageProductDependencies = (
+			);
+			productName = VoxScribeTests;
+			productReference = 5C444F4BC632001F225CF878 /* VoxScribeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		155507C8C7D8E4E7D327E55B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = E437F64C0CC669F4F2FE5861 /* Build configuration list for PBXProject "VoxScribe" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 2224AE5F353B0FA7317FE5FB;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 25558BE13427928DC3F4FF40 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				3BD43F199A3FEF0F42376684 /* VoxScribe */,
+				F4270E417D72153DD0289225 /* VoxScribeTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		28C71E70BCB09D417434D115 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F195E750A74B4F5FA186E48 /* VoxScribeApp.swift in Sources */,
+				AA537E273AF017EC430EF4E2 /* binary-ops.cpp in Sources */,
+				183AEECB9BC86A75C5BC35C5 /* ggml-alloc.c in Sources */,
+				44454EA58EACE86622569A34 /* ggml-backend-reg.cpp in Sources */,
+				7242AFAB8E9080125586C97E /* ggml-backend.cpp in Sources */,
+				E77466B21CE08160264E1ACA /* ggml-cpu.c in Sources */,
+				C63B3866BD1A7C1E85CAA6AD /* ggml-cpu.cpp in Sources */,
+				084FAD383F6A410E88AF4822 /* ggml-opt.cpp in Sources */,
+				19D735E91BAC99EEBFB756AF /* ggml-quants.c in Sources */,
+				98BA339A3529AE687579A7BD /* ggml-threading.cpp in Sources */,
+				46AE5F19F520E01F01FF691A /* ggml.c in Sources */,
+				3A0F1A82D859D5828F9A2D74 /* ggml.cpp in Sources */,
+				45D9B1A38C7F487CBE618DE4 /* gguf.cpp in Sources */,
+				0355F5647ACE264AF0E80F0D /* hbm.cpp in Sources */,
+				5C5DBE305C944A70CB34D83A /* ops.cpp in Sources */,
+				A7B62A5394EC6365547F61D0 /* quants.c in Sources */,
+				F5697823E4604F3A8A12A634 /* repack.cpp in Sources */,
+				093F48C0DA23CB47AEFA96D0 /* traits.cpp in Sources */,
+				B15CCF29671B2896AB7DC5A9 /* unary-ops.cpp in Sources */,
+				04C924472A77D7590717E898 /* vec.cpp in Sources */,
+				3618CBF9B78D26A13BDA084A /* whisper.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		38335CF0ADCE82E086B3C79D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94498094E720DF5C38D62827 /* VoxScribeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7F7E78BE52C560861AC8C916 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3BD43F199A3FEF0F42376684 /* VoxScribe */;
+			targetProxy = 762A62DF331449F216159D4C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		551B5D2B05DE84DCFF5625C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		9CE6D5724CD9501C04BB65DF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		C180DBCF19E8CA45A0C1396D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.voxscribe.app.tests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VoxScribe.app/Contents/MacOS/VoxScribe";
+			};
+			name = Release;
+		};
+		DA21D14FDEB231622AF50DD3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.voxscribe.app.tests;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VoxScribe.app/Contents/MacOS/VoxScribe";
+			};
+			name = Debug;
+		};
+		F16301556ACC5629CD24B7D2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_ENTITLEMENTS = VoxScribe/VoxScribe.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"GGML_USE_ACCELERATE=1",
+					"GGML_USE_CPU=1",
+					"WHISPER_NO_OPENVINO=1",
+				);
+				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/libs/whisper.cpp/include",
+					"$(SRCROOT)/libs/whisper.cpp/ggml/include",
+					"$(SRCROOT)/libs/whisper.cpp/ggml/src",
+					"$(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-cpu",
+					"$(SRCROOT)/libs/whisper.cpp/src",
+				);
+				INFOPLIST_FILE = VoxScribe/App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				OTHER_LDFLAGS = (
+					"-framework Accelerate",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.voxscribe.app;
+				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "VoxScribe/Transcription/VoxScribe-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		FFEFBAED8345D668C65B0C93 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_ENTITLEMENTS = VoxScribe/VoxScribe.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_C_LANGUAGE_STANDARD = c11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"GGML_USE_ACCELERATE=1",
+					"GGML_USE_CPU=1",
+					"WHISPER_NO_OPENVINO=1",
+				);
+				GCC_WARN_INHIBIT_ALL_WARNINGS = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/libs/whisper.cpp/include",
+					"$(SRCROOT)/libs/whisper.cpp/ggml/include",
+					"$(SRCROOT)/libs/whisper.cpp/ggml/src",
+					"$(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-cpu",
+					"$(SRCROOT)/libs/whisper.cpp/src",
+				);
+				INFOPLIST_FILE = VoxScribe/App/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				OTHER_LDFLAGS = (
+					"-framework Accelerate",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.voxscribe.app;
+				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "VoxScribe/Transcription/VoxScribe-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B6148D7130E490ED064A6DFD /* Build configuration list for PBXNativeTarget "VoxScribeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DA21D14FDEB231622AF50DD3 /* Debug */,
+				C180DBCF19E8CA45A0C1396D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E437F64C0CC669F4F2FE5861 /* Build configuration list for PBXProject "VoxScribe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				551B5D2B05DE84DCFF5625C7 /* Debug */,
+				9CE6D5724CD9501C04BB65DF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		EE1AF25EEEF335A77988EA22 /* Build configuration list for PBXNativeTarget "VoxScribe" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F16301556ACC5629CD24B7D2 /* Debug */,
+				FFEFBAED8345D668C65B0C93 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 155507C8C7D8E4E7D327E55B /* Project object */;
+}

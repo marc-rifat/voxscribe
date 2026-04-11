@@ -1,0 +1,136 @@
+name: VoxScribe
+
+# Project-wide settings
+options:
+  deploymentTarget:
+    macOS: "13.0"
+  defaultConfig: Debug
+  xcodeVersion: "15"
+
+# Build configurations
+configs:
+  Debug: debug
+  Release: release
+
+# Project targets
+targets:
+  VoxScribe:
+    type: application
+    platform: macOS
+
+    # Source files for the main application target
+    sources:
+      # Swift application source
+      - path: VoxScribe
+        excludes:
+          - "**/*.entitlements"
+      # whisper.cpp core
+      - path: libs/whisper.cpp/src/whisper.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17 -DGGML_USE_ACCELERATE -DWHISPER_NO_OPENVINO"
+      # ggml core C sources
+      - path: libs/whisper.cpp/ggml/src/ggml.c
+        buildPhase: sources
+        compilerFlags: "-std=c11 -DGGML_USE_ACCELERATE"
+      - path: libs/whisper.cpp/ggml/src/ggml-alloc.c
+        buildPhase: sources
+        compilerFlags: "-std=c11"
+      - path: libs/whisper.cpp/ggml/src/ggml-quants.c
+        buildPhase: sources
+        compilerFlags: "-std=c11"
+      # ggml core C++ sources
+      - path: libs/whisper.cpp/ggml/src/ggml.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/ggml-backend.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/ggml-backend-reg.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17 -DGGML_USE_CPU"
+      - path: libs/whisper.cpp/ggml/src/ggml-threading.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/ggml-opt.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/gguf.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+      # ggml CPU backend
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/ggml-cpu.c
+        buildPhase: sources
+        compilerFlags: "-std=c11"
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/ggml-cpu.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/quants.c
+        buildPhase: sources
+        compilerFlags: "-std=c11"
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/ops.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/binary-ops.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/unary-ops.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/vec.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/traits.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/repack.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/hbm.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+
+    # Build settings
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.voxscribe.app
+        INFOPLIST_FILE: VoxScribe/App/Info.plist
+        CODE_SIGN_ENTITLEMENTS: VoxScribe/VoxScribe.entitlements
+        SWIFT_OBJC_BRIDGING_HEADER: VoxScribe/Transcription/VoxScribe-Bridging-Header.h
+        SWIFT_VERSION: "5.0"
+        MACOSX_DEPLOYMENT_TARGET: "13.0"
+        # Header search paths for whisper.cpp and ggml
+        HEADER_SEARCH_PATHS:
+          - $(SRCROOT)/libs/whisper.cpp/include
+          - $(SRCROOT)/libs/whisper.cpp/ggml/include
+          - $(SRCROOT)/libs/whisper.cpp/ggml/src
+          - $(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-cpu
+          - $(SRCROOT)/libs/whisper.cpp/src
+        # Link against Accelerate for BLAS acceleration
+        OTHER_LDFLAGS:
+          - "-framework Accelerate"
+        GCC_PREPROCESSOR_DEFINITIONS:
+          - GGML_USE_ACCELERATE=1
+          - GGML_USE_CPU=1
+          - WHISPER_NO_OPENVINO=1
+        CLANG_CXX_LANGUAGE_STANDARD: c++17
+        CLANG_CXX_LIBRARY: libc++
+        GCC_C_LANGUAGE_STANDARD: c11
+        # Suppress warnings from third-party C/C++ code
+        GCC_WARN_INHIBIT_ALL_WARNINGS: NO
+        ENABLE_HARDENED_RUNTIME: YES
+
+  VoxScribeTests:
+    type: bundle.unit-test
+    platform: macOS
+
+    sources:
+      - path: VoxScribeTests
+
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.voxscribe.app.tests
+        MACOSX_DEPLOYMENT_TARGET: "13.0"
+        SWIFT_VERSION: "5.0"
+
+    dependencies:
+      - target: VoxScribe
