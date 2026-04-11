@@ -14,12 +14,16 @@
 		0CCB85AFA0C6571F9F7ABC4D /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142E4213963715A27269DE37 /* StatusBarController.swift */; };
 		183AEECB9BC86A75C5BC35C5 /* ggml-alloc.c in Sources */ = {isa = PBXBuildFile; fileRef = A33DD93AB286EDFACA962626 /* ggml-alloc.c */; settings = {COMPILER_FLAGS = "-std=c11"; }; };
 		19D735E91BAC99EEBFB756AF /* ggml-quants.c in Sources */ = {isa = PBXBuildFile; fileRef = B0AE17411FB757F14E3771B2 /* ggml-quants.c */; settings = {COMPILER_FLAGS = "-std=c11"; }; };
+		221971D76D5C613B1E574E81 /* ggml-metal-device.cpp in Sources */ = {isa = PBXBuildFile; fileRef = EABAF848B6551625D9756E5D /* ggml-metal-device.cpp */; settings = {COMPILER_FLAGS = "-std=c++17 -DGGML_USE_METAL"; }; };
+		2649882ABC89CA762547AFE4 /* ggml-metal-ops.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 45080C0C9897872636A981CD /* ggml-metal-ops.cpp */; settings = {COMPILER_FLAGS = "-std=c++17 -DGGML_USE_METAL"; }; };
 		2CDA7FA3655E735BE895E40F /* HistoryEntryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090670F2DE4CC1095E17DB74 /* HistoryEntryTests.swift */; };
+		332D8B062F0E83F3A7BE426F /* ggml-metal-context.m in Sources */ = {isa = PBXBuildFile; fileRef = B6E8A26D16A76584C37F76E4 /* ggml-metal-context.m */; settings = {COMPILER_FLAGS = "-DGGML_USE_METAL -fno-objc-arc"; }; };
 		33BA7492D6849AF30F848BC8 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DF209C14CCCA0B3994B9879 /* AppSettings.swift */; };
 		34014333E4771E54AC2775ED /* HotkeyRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4F849FDA5D7BA28F53D52E6 /* HotkeyRecorderView.swift */; };
 		3618CBF9B78D26A13BDA084A /* whisper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BE5C0D9F074A2956188D46AE /* whisper.cpp */; settings = {COMPILER_FLAGS = "-std=c++17 -DGGML_USE_ACCELERATE -DWHISPER_NO_OPENVINO"; }; };
 		3A0F1A82D859D5828F9A2D74 /* ggml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 874290760FB93FEA531D7385 /* ggml.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
 		3A844CD4517151CC48F1160F /* HistoryEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91137DCB9C786305F34B6436 /* HistoryEntry.swift */; };
+		43F70A609FD9118B13B6E264 /* ggml-metal-device.m in Sources */ = {isa = PBXBuildFile; fileRef = F2D758E5CB1F1AF14CFED229 /* ggml-metal-device.m */; settings = {COMPILER_FLAGS = "-DGGML_USE_METAL -fno-objc-arc"; }; };
 		44454EA58EACE86622569A34 /* ggml-backend-reg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D50918514AE011E6E49A831E /* ggml-backend-reg.cpp */; settings = {COMPILER_FLAGS = "-std=c++17 -DGGML_USE_CPU"; }; };
 		45D9B1A38C7F487CBE618DE4 /* gguf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E112AC20434AA51F9A8E0687 /* gguf.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
 		46AE5F19F520E01F01FF691A /* ggml.c in Sources */ = {isa = PBXBuildFile; fileRef = 771BF43F2370A816CC232FE5 /* ggml.c */; settings = {COMPILER_FLAGS = "-std=c11 -DGGML_USE_ACCELERATE"; }; };
@@ -33,19 +37,23 @@
 		8F195E750A74B4F5FA186E48 /* VoxScribeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84198B5F12056E73B799CAFF /* VoxScribeApp.swift */; };
 		94498094E720DF5C38D62827 /* VoxScribeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4357B8578B1EF2E0F21EF18E /* VoxScribeTests.swift */; };
 		98BA339A3529AE687579A7BD /* ggml-threading.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DDA3A4725557A816E014DD1 /* ggml-threading.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		A2526B11B4D51FBC3E343C86 /* ggml-metal.metal in Resources */ = {isa = PBXBuildFile; fileRef = 10190FF6879F66EAAF2D53DC /* ggml-metal.metal */; };
 		A265AAF7ED2E6A34FF4BE9CB /* quants.c in Sources */ = {isa = PBXBuildFile; fileRef = 71E00E9AA4BF92A07341B923 /* quants.c */; settings = {COMPILER_FLAGS = "-std=c11"; }; };
 		A3C1BAA1231C4C2DFE21E10C /* ModelManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2D158E94011AEE183AB3BB /* ModelManagerTests.swift */; };
 		A7B62A5394EC6365547F61D0 /* quants.c in Sources */ = {isa = PBXBuildFile; fileRef = AB48F9DF54F4914B6D39F2A9 /* quants.c */; settings = {COMPILER_FLAGS = "-std=c11"; }; };
 		AA537E273AF017EC430EF4E2 /* binary-ops.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F83A4C86BAE99A631B91AA19 /* binary-ops.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
 		AF04DE20A1AE29827994B7ED /* WhisperModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43DB211D559CA6D0C7538E3 /* WhisperModel.swift */; };
+		AF08309E552D581116600362 /* ggml-metal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A60C314002BC12B1E21B402A /* ggml-metal.cpp */; settings = {COMPILER_FLAGS = "-std=c++17 -DGGML_USE_METAL"; }; };
 		B15CCF29671B2896AB7DC5A9 /* unary-ops.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C5728A4F570CCBEAF31B33E6 /* unary-ops.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
 		B1682E11D6A576E8FBFB7CBF /* MenuBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3A9E382FD9987248C8EA690 /* MenuBuilder.swift */; };
+		B693D665C83C44FA6047E564 /* ggml-metal-common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5C9BC546DD3BD5323DC31584 /* ggml-metal-common.cpp */; settings = {COMPILER_FLAGS = "-std=c++17 -DGGML_USE_METAL"; }; };
 		B9C1184EC406434E82C28140 /* AppSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06AD13B3432EF5B344864DC9 /* AppSettingsTests.swift */; };
 		BC00855978D3F07EA58F54CD /* AudioDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C95123BE0EFEE5CCFCE3DB /* AudioDeviceManager.swift */; };
 		BD4FD8977AF69C56AD5D3143 /* sgemm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B6C3F11F673FB6A713B7A3C2 /* sgemm.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
 		C63B3866BD1A7C1E85CAA6AD /* ggml-cpu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15BCFA70A54EB119EDCC1195 /* ggml-cpu.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
 		CB75E519947EF54B279EEDA9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664120FE14C02D6F2A1DCF33 /* main.swift */; };
 		D0E747D6CAA9AEC5C02DB19C /* WhisperModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1847C24224B397B1B3E31C46 /* WhisperModelTests.swift */; };
+		D80A7DC5A4ADBCFF260B80F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A23B4A28496D4F2DD53F8B7 /* Assets.xcassets */; };
 		D890189980A9D4610B542137 /* TranscriptionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D5B1AEAD3D6F0853B39CB3 /* TranscriptionEngine.swift */; };
 		E77466B21CE08160264E1ACA /* ggml-cpu.c in Sources */ = {isa = PBXBuildFile; fileRef = A33FE72C8B6C2FA130409C68 /* ggml-cpu.c */; settings = {COMPILER_FLAGS = "-std=c11"; }; };
 		EE4B3F196EFE3339D7AAE77A /* ModelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D8746206D58E4674C2C2E09 /* ModelManager.swift */; };
@@ -70,6 +78,7 @@
 		06AD13B3432EF5B344864DC9 /* AppSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsTests.swift; sourceTree = "<group>"; };
 		090670F2DE4CC1095E17DB74 /* HistoryEntryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryEntryTests.swift; sourceTree = "<group>"; };
 		0A0FFCFEA12E3FBBE69A215E /* ClipboardHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardHistoryTests.swift; sourceTree = "<group>"; };
+		10190FF6879F66EAAF2D53DC /* ggml-metal.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = "ggml-metal.metal"; sourceTree = "<group>"; };
 		12070155768A047726A12376 /* cpu-feats.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "cpu-feats.cpp"; sourceTree = "<group>"; };
 		142E4213963715A27269DE37 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 		15BCFA70A54EB119EDCC1195 /* ggml-cpu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-cpu.cpp"; sourceTree = "<group>"; };
@@ -81,10 +90,13 @@
 		402A968F3E93253CA843FEE0 /* repack.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = repack.cpp; sourceTree = "<group>"; };
 		4357B8578B1EF2E0F21EF18E /* VoxScribeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoxScribeTests.swift; sourceTree = "<group>"; };
 		44EA668C112F95B1F3B22CB5 /* vec.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = vec.cpp; sourceTree = "<group>"; };
+		45080C0C9897872636A981CD /* ggml-metal-ops.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-metal-ops.cpp"; sourceTree = "<group>"; };
+		4A23B4A28496D4F2DD53F8B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C336A682B70A320433F406F /* traits.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = traits.cpp; sourceTree = "<group>"; };
 		4E8EA16CFC8B5A913DFF0237 /* ClipboardHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardHistory.swift; sourceTree = "<group>"; };
 		595C5D92F1766321C25441E5 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
 		5C444F4BC632001F225CF878 /* VoxScribeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoxScribeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5C9BC546DD3BD5323DC31584 /* ggml-metal-common.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-metal-common.cpp"; sourceTree = "<group>"; };
 		5D8746206D58E4674C2C2E09 /* ModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelManager.swift; sourceTree = "<group>"; };
 		5EA34CA93355CBDC7D58E63E /* ggml-backend.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-backend.cpp"; sourceTree = "<group>"; };
 		664120FE14C02D6F2A1DCF33 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -101,10 +113,12 @@
 		A33FE72C8B6C2FA130409C68 /* ggml-cpu.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "ggml-cpu.c"; sourceTree = "<group>"; };
 		A3A9E382FD9987248C8EA690 /* MenuBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBuilder.swift; sourceTree = "<group>"; };
 		A4F849FDA5D7BA28F53D52E6 /* HotkeyRecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyRecorderView.swift; sourceTree = "<group>"; };
+		A60C314002BC12B1E21B402A /* ggml-metal.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-metal.cpp"; sourceTree = "<group>"; };
 		AB48F9DF54F4914B6D39F2A9 /* quants.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = quants.c; sourceTree = "<group>"; };
 		B0AE17411FB757F14E3771B2 /* ggml-quants.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = "ggml-quants.c"; sourceTree = "<group>"; };
 		B43DB211D559CA6D0C7538E3 /* WhisperModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperModel.swift; sourceTree = "<group>"; };
 		B6C3F11F673FB6A713B7A3C2 /* sgemm.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = sgemm.cpp; sourceTree = "<group>"; };
+		B6E8A26D16A76584C37F76E4 /* ggml-metal-context.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ggml-metal-context.m"; sourceTree = "<group>"; };
 		BB2D158E94011AEE183AB3BB /* ModelManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelManagerTests.swift; sourceTree = "<group>"; };
 		BE5C0D9F074A2956188D46AE /* whisper.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = whisper.cpp; sourceTree = "<group>"; };
 		C1C95123BE0EFEE5CCFCE3DB /* AudioDeviceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioDeviceManager.swift; sourceTree = "<group>"; };
@@ -114,11 +128,28 @@
 		D069983B08B13C8750B65869 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D50918514AE011E6E49A831E /* ggml-backend-reg.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-backend-reg.cpp"; sourceTree = "<group>"; };
 		E112AC20434AA51F9A8E0687 /* gguf.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = gguf.cpp; sourceTree = "<group>"; };
+		EABAF848B6551625D9756E5D /* ggml-metal-device.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-metal-device.cpp"; sourceTree = "<group>"; };
+		F2D758E5CB1F1AF14CFED229 /* ggml-metal-device.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "ggml-metal-device.m"; sourceTree = "<group>"; };
 		F83A4C86BAE99A631B91AA19 /* binary-ops.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "binary-ops.cpp"; sourceTree = "<group>"; };
 		FC80B0F8AE2371AB05321E89 /* ggml-backend-dl.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-backend-dl.cpp"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		039BFAF95477FC7306E8BE34 /* ggml-metal */ = {
+			isa = PBXGroup;
+			children = (
+				5C9BC546DD3BD5323DC31584 /* ggml-metal-common.cpp */,
+				B6E8A26D16A76584C37F76E4 /* ggml-metal-context.m */,
+				EABAF848B6551625D9756E5D /* ggml-metal-device.cpp */,
+				F2D758E5CB1F1AF14CFED229 /* ggml-metal-device.m */,
+				45080C0C9897872636A981CD /* ggml-metal-ops.cpp */,
+				A60C314002BC12B1E21B402A /* ggml-metal.cpp */,
+				10190FF6879F66EAAF2D53DC /* ggml-metal.metal */,
+			);
+			name = "ggml-metal";
+			path = "libs/whisper.cpp/ggml/src/ggml-metal";
+			sourceTree = "<group>";
+		};
 		03AB42A9788D2101900F27D9 /* MenuBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -137,11 +168,20 @@
 			path = Transcription;
 			sourceTree = "<group>";
 		};
+		20E2AAB79CBCEA07040E00EA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				4A23B4A28496D4F2DD53F8B7 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		2224AE5F353B0FA7317FE5FB = {
 			isa = PBXGroup;
 			children = (
 				BE06744F9EF7851184AA2506 /* arm */,
 				511B49802AF2CEE7C95CD799 /* ggml-cpu */,
+				039BFAF95477FC7306E8BE34 /* ggml-metal */,
 				F8346A13B3FB23348C022A92 /* llamafile */,
 				71BA8FEBC133CA3757ECD13B /* src */,
 				52322C285351D954A00FBDF7 /* src */,
@@ -252,6 +292,7 @@
 				03AB42A9788D2101900F27D9 /* MenuBar */,
 				EED3C2FEFA52D07552B65D08 /* Models */,
 				24976A277C8768575186BE38 /* Recording */,
+				20E2AAB79CBCEA07040E00EA /* Resources */,
 				37B0599DAF26D84B51BCEEC2 /* Settings */,
 				0D890171A9075C48A3D57309 /* Transcription */,
 			);
@@ -316,6 +357,7 @@
 			buildConfigurationList = EE1AF25EEEF335A77988EA22 /* Build configuration list for PBXNativeTarget "VoxScribe" */;
 			buildPhases = (
 				28C71E70BCB09D417434D115 /* Sources */,
+				7C24E337248F264375FEA40F /* Resources */,
 			);
 			buildRules = (
 			);
@@ -377,6 +419,18 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		7C24E337248F264375FEA40F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D80A7DC5A4ADBCFF260B80F4 /* Assets.xcassets in Resources */,
+				A2526B11B4D51FBC3E343C86 /* ggml-metal.metal in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		28C71E70BCB09D417434D115 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -404,6 +458,12 @@
 				7242AFAB8E9080125586C97E /* ggml-backend.cpp in Sources */,
 				E77466B21CE08160264E1ACA /* ggml-cpu.c in Sources */,
 				C63B3866BD1A7C1E85CAA6AD /* ggml-cpu.cpp in Sources */,
+				B693D665C83C44FA6047E564 /* ggml-metal-common.cpp in Sources */,
+				332D8B062F0E83F3A7BE426F /* ggml-metal-context.m in Sources */,
+				221971D76D5C613B1E574E81 /* ggml-metal-device.cpp in Sources */,
+				43F70A609FD9118B13B6E264 /* ggml-metal-device.m in Sources */,
+				2649882ABC89CA762547AFE4 /* ggml-metal-ops.cpp in Sources */,
+				AF08309E552D581116600362 /* ggml-metal.cpp in Sources */,
 				084FAD383F6A410E88AF4822 /* ggml-opt.cpp in Sources */,
 				19D735E91BAC99EEBFB756AF /* ggml-quants.c in Sources */,
 				98BA339A3529AE687579A7BD /* ggml-threading.cpp in Sources */,
@@ -617,6 +677,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"GGML_USE_ACCELERATE=1",
 					"GGML_USE_CPU=1",
+					"GGML_USE_METAL=1",
 					"WHISPER_NO_OPENVINO=1",
 					"WHISPER_VERSION=\\\"1.0.0\\\"",
 					"GGML_VERSION=\\\"1.0.0\\\"",
@@ -627,6 +688,7 @@
 					"$(SRCROOT)/libs/whisper.cpp/include",
 					"$(SRCROOT)/libs/whisper.cpp/ggml/include",
 					"$(SRCROOT)/libs/whisper.cpp/ggml/src",
+					"$(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-metal",
 					"$(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-cpu",
 					"$(SRCROOT)/libs/whisper.cpp/src",
 				);
@@ -636,8 +698,16 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/libs/whisper.cpp/ggml/src",
+					"$(SRCROOT)/libs/whisper.cpp/ggml/include",
+					"$(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-metal",
+				);
 				OTHER_LDFLAGS = (
 					"-framework Accelerate",
+					"-framework Metal",
+					"-framework MetalKit",
+					"-framework Foundation",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.voxscribe.app;
 				SDKROOT = macosx;
@@ -659,6 +729,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"GGML_USE_ACCELERATE=1",
 					"GGML_USE_CPU=1",
+					"GGML_USE_METAL=1",
 					"WHISPER_NO_OPENVINO=1",
 					"WHISPER_VERSION=\\\"1.0.0\\\"",
 					"GGML_VERSION=\\\"1.0.0\\\"",
@@ -669,6 +740,7 @@
 					"$(SRCROOT)/libs/whisper.cpp/include",
 					"$(SRCROOT)/libs/whisper.cpp/ggml/include",
 					"$(SRCROOT)/libs/whisper.cpp/ggml/src",
+					"$(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-metal",
 					"$(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-cpu",
 					"$(SRCROOT)/libs/whisper.cpp/src",
 				);
@@ -678,8 +750,16 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/libs/whisper.cpp/ggml/src",
+					"$(SRCROOT)/libs/whisper.cpp/ggml/include",
+					"$(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-metal",
+				);
 				OTHER_LDFLAGS = (
 					"-framework Accelerate",
+					"-framework Metal",
+					"-framework MetalKit",
+					"-framework Foundation",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.voxscribe.app;
 				SDKROOT = macosx;

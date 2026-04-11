@@ -85,9 +85,12 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         modelManager: ModelManager,
         settings: AppSettings
     ) {
+        NSLog("Selected model name from settings: '\(settings.selectedModelName)'")
+        NSLog("Downloaded models: \(modelManager.downloadedModels().map { $0.name })")
         let selectedModel = WhisperModel.allModels.first {
             $0.name == settings.selectedModelName
         }
+        NSLog("Found model in allModels: \(String(describing: selectedModel?.name))")
 
         if let model = selectedModel, modelManager.isModelDownloaded(model) {
             do {

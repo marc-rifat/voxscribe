@@ -105,6 +105,27 @@ targets:
       - path: libs/whisper.cpp/ggml/src/ggml-cpu/llamafile/sgemm.cpp
         buildPhase: sources
         compilerFlags: "-std=c++17"
+      # ggml Metal backend (GPU acceleration)
+      - path: libs/whisper.cpp/ggml/src/ggml-metal/ggml-metal.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17 -DGGML_USE_METAL"
+      - path: libs/whisper.cpp/ggml/src/ggml-metal/ggml-metal-ops.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17 -DGGML_USE_METAL"
+      - path: libs/whisper.cpp/ggml/src/ggml-metal/ggml-metal-common.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17 -DGGML_USE_METAL"
+      - path: libs/whisper.cpp/ggml/src/ggml-metal/ggml-metal-device.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17 -DGGML_USE_METAL"
+      - path: libs/whisper.cpp/ggml/src/ggml-metal/ggml-metal-device.m
+        buildPhase: sources
+        compilerFlags: "-DGGML_USE_METAL -fno-objc-arc"
+      - path: libs/whisper.cpp/ggml/src/ggml-metal/ggml-metal-context.m
+        buildPhase: sources
+        compilerFlags: "-DGGML_USE_METAL -fno-objc-arc"
+      - path: libs/whisper.cpp/ggml/src/ggml-metal/ggml-metal.metal
+        buildPhase: resources
 
     # Build settings
     settings:
@@ -120,18 +141,27 @@ targets:
           - $(SRCROOT)/libs/whisper.cpp/include
           - $(SRCROOT)/libs/whisper.cpp/ggml/include
           - $(SRCROOT)/libs/whisper.cpp/ggml/src
+          - $(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-metal
           - $(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-cpu
           - $(SRCROOT)/libs/whisper.cpp/src
         # Link against Accelerate for BLAS acceleration
         OTHER_LDFLAGS:
           - "-framework Accelerate"
+          - "-framework Metal"
+          - "-framework MetalKit"
+          - "-framework Foundation"
         GCC_PREPROCESSOR_DEFINITIONS:
           - GGML_USE_ACCELERATE=1
           - GGML_USE_CPU=1
+          - GGML_USE_METAL=1
           - WHISPER_NO_OPENVINO=1
           - 'WHISPER_VERSION=\"1.0.0\"'
           - 'GGML_VERSION=\"1.0.0\"'
           - 'GGML_COMMIT=\"local\"'
+        MTL_HEADER_SEARCH_PATHS:
+          - $(SRCROOT)/libs/whisper.cpp/ggml/src
+          - $(SRCROOT)/libs/whisper.cpp/ggml/include
+          - $(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-metal
         CLANG_CXX_LANGUAGE_STANDARD: c++17
         CLANG_CXX_LIBRARY: libc++
         GCC_C_LANGUAGE_STANDARD: c11

@@ -23,6 +23,7 @@ final class StatusBarController {
     weak var hotkeyManager: GlobalHotkeyManager?
 
     private var animationTimer: Timer?
+    private var settingsPanel: NSPopover?
     private(set) var appState: AppState = .idle
 
     /// Creates a StatusBarController and sets up the menu bar icon.
@@ -102,6 +103,7 @@ final class StatusBarController {
             appState = .recording
             updateIcon()
             startRecordingAnimation()
+            NSLog("Recording STARTED")
         } catch {
             NSLog("Failed to start recording: \(error.localizedDescription)")
             sendNotification(title: "Recording Failed", body: error.localizedDescription)
@@ -112,17 +114,21 @@ final class StatusBarController {
     private func stopRecordingAndTranscribe() {
         do {
             let audioURL = try audioRecorder.stopRecording()
+            let fileSize = (try? FileManager.default.attributesOfItem(atPath: audioURL.path)[.size] as? Int) ?? 0
+            NSLog("Recording STOPPED. File: \(audioURL.lastPathComponent), size: \(fileSize) bytes")
             appState = .transcribing
             updateIcon()
             startTranscribingAnimation()
 
+            NSLog("Starting transcription...")
             transcriptionEngine.transcribe(audioFileURL: audioURL) { [weak self] result in
                 self?.stopAnimation()
                 switch result {
                 case .success(let text):
+                    NSLog("Transcription SUCCESS: '\(text)'")
                     self?.handleTranscriptionResult(text)
                 case .failure(let error):
-                    NSLog("Transcription failed: \(error.localizedDescription)")
+                    NSLog("Transcription FAILED: \(error.localizedDescription)")
                     self?.sendNotification(
                         title: "Transcription Failed",
                         body: error.localizedDescription
@@ -229,11 +235,18 @@ final class StatusBarController {
         UNUserNotificationCenter.current().add(request)
     }
 
-    /// Opens the settings popover anchored to the status bar button.
+    /// Opens the settings popover attached to the menu bar icon.
     @objc func openSettings() {
+        if let existing = settingsPanel, existing.isShown {
+            existing.performClose(nil)
+            settingsPanel = nil
+            return
+        }
+
         guard let button = statusItem.button else { return }
+
         let popover = NSPopover()
-        popover.contentSize = NSSize(width: 400, height: 600)
+        popover.contentSize = NSSize(width: 380, height: 500)
         popover.behavior = .transient
         popover.contentViewController = NSHostingController(
             rootView: SettingsView(
@@ -246,9 +259,14 @@ final class StatusBarController {
                     self.hotkeyManager?.register { [weak self] in
                         self?.toggleRecording()
                     }
+                },
+                onClose: { [weak self] in
+                    self?.settingsPanel?.performClose(nil)
+                    self?.settingsPanel = nil
                 }
             )
         )
+        settingsPanel = popover
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
     }
 
@@ -261,8 +279,8 @@ final class StatusBarController {
             modelManager: modelManager,
             statusBarController: self
         )
-        statusItem.menu = menu
-        statusItem.button?.performClick(nil)
-        statusItem.menu = nil  // reset so left click works again
+        guard let button = statusItem.button else { return }
+        let location = NSPoint(x: 0, y: button.bounds.height + 5)
+        menu.popUp(positioning: nil, at: location, in: button)
     }
 }

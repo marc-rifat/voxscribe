@@ -1,13 +1,15 @@
+import Combine
 import Foundation
 
 /// Manages all user-configurable settings via UserDefaults.
 ///
 /// Provides typed access to persisted preferences including hotkey
 /// configuration, model selection, audio input device, history limit,
-/// and launch-at-login state.
+/// and launch-at-login state. Conforms to ObservableObject so SwiftUI
+/// views update when settings change.
 ///
 /// - Parameter defaults: The UserDefaults suite to use. Defaults to `.standard`.
-final class AppSettings {
+final class AppSettings: ObservableObject {
     private let defaults: UserDefaults
 
     init(defaults: UserDefaults = .standard) {
@@ -39,7 +41,10 @@ final class AppSettings {
     /// The filename of the currently selected whisper model (e.g., "tiny", "base.en").
     var selectedModelName: String {
         get { defaults.string(forKey: "selectedModelName") ?? "tiny" }
-        set { defaults.set(newValue, forKey: "selectedModelName") }
+        set {
+            objectWillChange.send()
+            defaults.set(newValue, forKey: "selectedModelName")
+        }
     }
 
     /// The CoreAudio device ID string for the selected audio input, or nil for system default.

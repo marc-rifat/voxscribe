@@ -8,8 +8,9 @@ import SwiftUI
 struct SettingsView: View {
     @ObservedObject var modelManager: ModelManager
     @ObservedObject var audioDeviceManager: AudioDeviceManager
-    let settings: AppSettings
+    @ObservedObject var settings: AppSettings
     let onHotkeyChanged: () -> Void
+    var onClose: (() -> Void)?
 
     @State private var hotkeyKeyCode: Int?
     @State private var hotkeyModifierFlags: UInt?
@@ -18,9 +19,19 @@ struct SettingsView: View {
     @State private var selectedDeviceUID: String?
 
     var body: some View {
+        ScrollView {
         VStack(alignment: .leading, spacing: 16) {
-            Text("VoxScribe Settings")
-                .font(.headline)
+            HStack {
+                Text("VoxScribe Settings")
+                    .font(.headline)
+                Spacer()
+                Button(action: { onClose?() }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.title2)
+                        .foregroundColor(.secondary)
+                }
+                .buttonStyle(.plain)
+            }
 
             // Hotkey Section
             GroupBox(label: Text("Global Hotkey")) {
@@ -143,7 +154,8 @@ struct SettingsView: View {
                 }
         }
         .padding()
-        .frame(width: 400)
+        }
+        .frame(width: 380, height: 500)
         .onAppear {
             hotkeyKeyCode = settings.hotkeyKeyCode
             hotkeyModifierFlags = settings.hotkeyModifierFlags
