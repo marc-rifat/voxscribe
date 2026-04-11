@@ -1,4 +1,5 @@
 import Cocoa
+import SwiftUI
 import UserNotifications
 
 /// The three states the menu bar icon can be in.
@@ -19,6 +20,7 @@ final class StatusBarController {
     private let settings: AppSettings
     private let modelManager: ModelManager
     private let audioDeviceManager: AudioDeviceManager
+    weak var hotkeyManager: GlobalHotkeyManager?
 
     private var animationTimer: Timer?
     private(set) var appState: AppState = .idle
@@ -47,9 +49,10 @@ final class StatusBarController {
         self.modelManager = modelManager
         self.audioDeviceManager = audioDeviceManager
 
-        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         setupButton()
         updateIcon()
+        NSLog("StatusBarController initialized, button: \(String(describing: statusItem.button)), image: \(String(describing: statusItem.button?.image)), title: \(String(describing: statusItem.button?.title))")
     }
 
     /// Configures the status bar button with click event handling.
@@ -152,20 +155,23 @@ final class StatusBarController {
         guard let button = statusItem.button else { return }
         switch appState {
         case .idle:
-            button.image = NSImage(
-                systemSymbolName: "mic",
-                accessibilityDescription: "VoxScribe - idle"
-            )
+            if let image = NSImage(systemSymbolName: "mic", accessibilityDescription: "VoxScribe - idle") {
+                button.image = image
+            } else {
+                button.title = "MIC"
+            }
         case .recording:
-            button.image = NSImage(
-                systemSymbolName: "mic.fill",
-                accessibilityDescription: "VoxScribe - recording"
-            )
+            if let image = NSImage(systemSymbolName: "mic.fill", accessibilityDescription: "VoxScribe - recording") {
+                button.image = image
+            } else {
+                button.title = "REC"
+            }
         case .transcribing:
-            button.image = NSImage(
-                systemSymbolName: "waveform",
-                accessibilityDescription: "VoxScribe - transcribing"
-            )
+            if let image = NSImage(systemSymbolName: "waveform", accessibilityDescription: "VoxScribe - transcribing") {
+                button.image = image
+            } else {
+                button.title = "..."
+            }
         }
     }
 
@@ -221,6 +227,29 @@ final class StatusBarController {
             trigger: nil
         )
         UNUserNotificationCenter.current().add(request)
+    }
+
+    /// Opens the settings popover anchored to the status bar button.
+    @objc func openSettings() {
+        guard let button = statusItem.button else { return }
+        let popover = NSPopover()
+        popover.contentSize = NSSize(width: 400, height: 600)
+        popover.behavior = .transient
+        popover.contentViewController = NSHostingController(
+            rootView: SettingsView(
+                modelManager: modelManager,
+                audioDeviceManager: audioDeviceManager,
+                settings: settings,
+                onHotkeyChanged: { [weak self] in
+                    guard let self = self else { return }
+                    self.hotkeyManager?.unregister()
+                    self.hotkeyManager?.register { [weak self] in
+                        self?.toggleRecording()
+                    }
+                }
+            )
+        )
+        popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
     }
 
     /// Builds and displays the right-click context menu.

@@ -30,7 +30,7 @@ enum MenuBuilder {
         menu.addItem(buildHistorySubmenu(clipboardHistory: clipboardHistory))
         menu.addItem(NSMenuItem.separator())
 
-        let settingsItem = NSMenuItem(title: "Settings...", action: nil, keyEquivalent: ",")
+        let settingsItem = NSMenuItem(title: "Settings...", action: #selector(StatusBarController.openSettings), keyEquivalent: ",")
         settingsItem.target = statusBarController
         menu.addItem(settingsItem)
 

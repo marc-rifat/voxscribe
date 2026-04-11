@@ -8,7 +8,6 @@ import UserNotifications
 /// model manager, settings, hotkey manager, and status bar controller.
 /// Manages the app lifecycle including model loading on launch and
 /// cleanup on termination.
-@main
 class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusBarController: StatusBarController?
     private var hotkeyManager: GlobalHotkeyManager?
@@ -58,6 +57,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             try? SMAppService.mainApp.register()
         }
 
+        statusBarController.hotkeyManager = hotkeyManager
         self.statusBarController = statusBarController
         self.hotkeyManager = hotkeyManager
         self.transcriptionEngine = transcriptionEngine

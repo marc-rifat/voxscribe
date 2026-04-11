@@ -44,6 +44,7 @@
 		BC00855978D3F07EA58F54CD /* AudioDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C95123BE0EFEE5CCFCE3DB /* AudioDeviceManager.swift */; };
 		BD4FD8977AF69C56AD5D3143 /* sgemm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B6C3F11F673FB6A713B7A3C2 /* sgemm.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
 		C63B3866BD1A7C1E85CAA6AD /* ggml-cpu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15BCFA70A54EB119EDCC1195 /* ggml-cpu.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		CB75E519947EF54B279EEDA9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664120FE14C02D6F2A1DCF33 /* main.swift */; };
 		D0E747D6CAA9AEC5C02DB19C /* WhisperModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1847C24224B397B1B3E31C46 /* WhisperModelTests.swift */; };
 		D890189980A9D4610B542137 /* TranscriptionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D5B1AEAD3D6F0853B39CB3 /* TranscriptionEngine.swift */; };
 		E77466B21CE08160264E1ACA /* ggml-cpu.c in Sources */ = {isa = PBXBuildFile; fileRef = A33FE72C8B6C2FA130409C68 /* ggml-cpu.c */; settings = {COMPILER_FLAGS = "-std=c11"; }; };
@@ -86,6 +87,7 @@
 		5C444F4BC632001F225CF878 /* VoxScribeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VoxScribeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D8746206D58E4674C2C2E09 /* ModelManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelManager.swift; sourceTree = "<group>"; };
 		5EA34CA93355CBDC7D58E63E /* ggml-backend.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-backend.cpp"; sourceTree = "<group>"; };
+		664120FE14C02D6F2A1DCF33 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		71E00E9AA4BF92A07341B923 /* quants.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = quants.c; sourceTree = "<group>"; };
 		771BF43F2370A816CC232FE5 /* ggml.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ggml.c; sourceTree = "<group>"; };
 		7DF209C14CCCA0B3994B9879 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				009BCE3EC495A8BAC565CF0E /* Info.plist */,
+				664120FE14C02D6F2A1DCF33 /* main.swift */,
 				84198B5F12056E73B799CAFF /* VoxScribeApp.swift */,
 			);
 			path = App;
@@ -408,6 +411,7 @@
 				3A0F1A82D859D5828F9A2D74 /* ggml.cpp in Sources */,
 				45D9B1A38C7F487CBE618DE4 /* gguf.cpp in Sources */,
 				0355F5647ACE264AF0E80F0D /* hbm.cpp in Sources */,
+				CB75E519947EF54B279EEDA9 /* main.swift in Sources */,
 				5C5DBE305C944A70CB34D83A /* ops.cpp in Sources */,
 				A7B62A5394EC6365547F61D0 /* quants.c in Sources */,
 				A265AAF7ED2E6A34FF4BE9CB /* quants.c in Sources */,
