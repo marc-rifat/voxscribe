@@ -65,7 +65,7 @@ enum MenuBuilder {
             settings.audioInputDeviceID = nil
         }
         systemDefault.target = defaultHandler
-        systemDefault.action = #selector(MenuActionHandler.perform)
+        systemDefault.action = #selector(MenuActionHandler.handleAction)
         systemDefault.representedObject = defaultHandler
         submenu.addItem(systemDefault)
         submenu.addItem(NSMenuItem.separator())
@@ -77,7 +77,7 @@ enum MenuBuilder {
                 settings.audioInputDeviceID = device.uid
             }
             deviceItem.target = handler
-            deviceItem.action = #selector(MenuActionHandler.perform)
+            deviceItem.action = #selector(MenuActionHandler.handleAction)
             deviceItem.representedObject = handler
             submenu.addItem(deviceItem)
         }
@@ -109,7 +109,7 @@ enum MenuBuilder {
                     NSPasteboard.general.setString(entry.text, forType: .string)
                 }
                 entryItem.target = handler
-                entryItem.action = #selector(MenuActionHandler.perform)
+                entryItem.action = #selector(MenuActionHandler.handleAction)
                 entryItem.representedObject = handler
                 submenu.addItem(entryItem)
             }
@@ -135,7 +135,7 @@ final class MenuActionHandler: NSObject {
     }
 
     /// Invoked by the menu item's action mechanism.
-    @objc func perform() {
+    @objc func handleAction() {
         closure()
     }
 }

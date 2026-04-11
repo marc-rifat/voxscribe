@@ -57,6 +57,9 @@ targets:
       - path: libs/whisper.cpp/ggml/src/gguf.cpp
         buildPhase: sources
         compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/ggml-backend-dl.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
       # ggml CPU backend
       - path: libs/whisper.cpp/ggml/src/ggml-cpu/ggml-cpu.c
         buildPhase: sources
@@ -88,6 +91,20 @@ targets:
       - path: libs/whisper.cpp/ggml/src/ggml-cpu/hbm.cpp
         buildPhase: sources
         compilerFlags: "-std=c++17"
+      # ggml CPU arch-specific (ARM / Apple Silicon)
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/arch/arm/cpu-feats.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/arch/arm/quants.c
+        buildPhase: sources
+        compilerFlags: "-std=c11"
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/arch/arm/repack.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+      # llamafile GEMM kernels
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/llamafile/sgemm.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
 
     # Build settings
     settings:
@@ -112,6 +129,9 @@ targets:
           - GGML_USE_ACCELERATE=1
           - GGML_USE_CPU=1
           - WHISPER_NO_OPENVINO=1
+          - 'WHISPER_VERSION=\"1.0.0\"'
+          - 'GGML_VERSION=\"1.0.0\"'
+          - 'GGML_COMMIT=\"local\"'
         CLANG_CXX_LANGUAGE_STANDARD: c++17
         CLANG_CXX_LIBRARY: libc++
         GCC_C_LANGUAGE_STANDARD: c11

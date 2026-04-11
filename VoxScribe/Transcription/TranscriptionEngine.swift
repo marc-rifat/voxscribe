@@ -28,7 +28,8 @@ final class TranscriptionEngine {
     func loadModel(_ model: WhisperModel) throws {
         unloadModel()
         let path = model.localFilePath.path
-        guard let context = whisper_init_from_file(path) else {
+        var params = whisper_context_default_params()
+        guard let context = whisper_init_from_file_with_params(path, params) else {
             throw TranscriptionError.modelLoadFailed(model.name)
         }
         whisperContext = context
