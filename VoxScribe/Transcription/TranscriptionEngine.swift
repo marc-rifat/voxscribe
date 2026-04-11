@@ -4,14 +4,14 @@ import Foundation
 ///
 /// Manages the lifecycle of a whisper model context, providing methods
 /// to load models, run transcription on PCM audio files, and free resources.
-/// All transcription runs on a background queue; results are delivered
-/// on the main queue via completion closures.
+/// All model and transcription operations are serialized on a dedicated queue
+/// to prevent race conditions and use-after-free crashes.
 ///
 /// - Important: Only one model is loaded at a time. Switching models
 ///   frees the previous context before loading the new one.
 final class TranscriptionEngine {
     private var whisperContext: OpaquePointer?
-    private let transcriptionQueue = DispatchQueue(
+    private let engineQueue = DispatchQueue(
         label: "com.voxscribe.transcription",
         qos: .userInitiated
     )
@@ -20,37 +20,65 @@ final class TranscriptionEngine {
 
     /// Loads a whisper model from disk into memory.
     ///
-    /// If another model is already loaded, it is freed first.
+    /// If another model is already loaded, it is freed first. This method
+    /// blocks until the model is fully loaded, ensuring thread safety with
+    /// the transcription queue.
     ///
     /// - Parameter model: The whisper model whose local file should be loaded.
     /// - Throws: `TranscriptionError.modelLoadFailed` if the file cannot be
-    ///   loaded by whisper.cpp.
+    ///   loaded by whisper.cpp, or `TranscriptionError.busyTranscribing` if
+    ///   a transcription is currently in progress.
     func loadModel(_ model: WhisperModel) throws {
-        unloadModel()
-        let path = model.localFilePath.path
-        var params = whisper_context_default_params()
-        guard let context = whisper_init_from_file_with_params(path, params) else {
-            throw TranscriptionError.modelLoadFailed(model.name)
+        if isTranscribing {
+            throw TranscriptionError.busyTranscribing
         }
-        whisperContext = context
-        loadedModelName = model.name
-        NSLog("Loaded whisper model: \(model.name)")
+
+        // Synchronously execute on the engine queue to ensure no transcription
+        // is using the context while we swap it
+        var loadError: Error?
+        engineQueue.sync {
+            if let oldContext = whisperContext {
+                whisper_free(oldContext)
+                whisperContext = nil
+                loadedModelName = nil
+                NSLog("Unloaded whisper model")
+            }
+
+            let path = model.localFilePath.path
+            var params = whisper_context_default_params()
+            guard let context = whisper_init_from_file_with_params(path, params) else {
+                loadError = TranscriptionError.modelLoadFailed(model.name)
+                return
+            }
+            whisperContext = context
+            loadedModelName = model.name
+            NSLog("Loaded whisper model: \(model.name)")
+        }
+
+        if let error = loadError {
+            throw error
+        }
     }
 
     /// Frees the currently loaded model from memory.
+    ///
+    /// Blocks until any in-progress transcription completes before freeing.
     func unloadModel() {
-        if let context = whisperContext {
-            whisper_free(context)
-            whisperContext = nil
-            loadedModelName = nil
-            NSLog("Unloaded whisper model")
+        engineQueue.sync {
+            if let context = whisperContext {
+                whisper_free(context)
+                whisperContext = nil
+                loadedModelName = nil
+                NSLog("Unloaded whisper model")
+            }
         }
     }
 
     /// Transcribes a 16kHz mono PCM audio file to text.
     ///
-    /// The transcription runs on a background queue. The completion handler
-    /// is called on the main queue with either the transcribed text or an error.
+    /// The transcription runs on a serialized queue shared with model loading,
+    /// preventing use-after-free. The completion handler is called on the main
+    /// queue with either the transcribed text or an error.
     ///
     /// - Parameters:
     ///   - audioFileURL: Path to a 16kHz mono Float32 PCM file (no header).
@@ -59,7 +87,7 @@ final class TranscriptionEngine {
         audioFileURL: URL,
         completion: @escaping (Result<String, Error>) -> Void
     ) {
-        guard let context = whisperContext else {
+        guard whisperContext != nil else {
             DispatchQueue.main.async {
                 completion(.failure(TranscriptionError.noModelLoaded))
             }
@@ -68,11 +96,20 @@ final class TranscriptionEngine {
 
         isTranscribing = true
 
-        transcriptionQueue.async { [weak self] in
+        engineQueue.async { [weak self] in
             defer {
                 DispatchQueue.main.async {
                     self?.isTranscribing = false
                 }
+            }
+
+            // Re-check context inside the queue -- it may have been freed
+            // between the guard above and this async block executing
+            guard let context = self?.whisperContext else {
+                DispatchQueue.main.async {
+                    completion(.failure(TranscriptionError.noModelLoaded))
+                }
+                return
             }
 
             do {
@@ -142,7 +179,10 @@ final class TranscriptionEngine {
     }
 
     deinit {
-        unloadModel()
+        // Direct free in deinit -- no other thread can hold a reference
+        if let context = whisperContext {
+            whisper_free(context)
+        }
     }
 }
 
@@ -152,6 +192,7 @@ enum TranscriptionError: LocalizedError {
     case noModelLoaded
     case emptyAudio
     case transcriptionFailed
+    case busyTranscribing
 
     var errorDescription: String? {
         switch self {
@@ -163,6 +204,8 @@ enum TranscriptionError: LocalizedError {
             return "Audio file contains no samples."
         case .transcriptionFailed:
             return "Transcription failed."
+        case .busyTranscribing:
+            return "Cannot switch models while transcription is in progress."
         }
     }
 }
