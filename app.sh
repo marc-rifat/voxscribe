@@ -200,19 +200,14 @@ install_app() {
     echo -e "  ${WHITE}Build & Install${NC}"
     echo ""
 
+    if ! build_app; then
+        pause
+        return
+    fi
+
     local built_app
     built_app=$(get_built_app)
     local executable="${built_app}/Contents/MacOS/${APP_NAME}"
-
-    if [ -z "$built_app" ] || [ ! -x "$executable" ]; then
-        echo -e "  ${YELLOW}No build found. Building first...${NC}"
-        if ! build_app; then
-            pause
-            return
-        fi
-        built_app=$(get_built_app)
-        executable="${built_app}/Contents/MacOS/${APP_NAME}"
-    fi
 
     if [ ! -x "$executable" ]; then
         echo -e "  ${RED}Build failed. Cannot install.${NC}"
