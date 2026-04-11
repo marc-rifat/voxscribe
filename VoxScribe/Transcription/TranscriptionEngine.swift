@@ -24,51 +24,61 @@ final class TranscriptionEngine {
     /// blocks until the model is fully loaded, ensuring thread safety with
     /// the transcription queue.
     ///
-    /// - Parameter model: The whisper model whose local file should be loaded.
-    /// - Throws: `TranscriptionError.modelLoadFailed` if the file cannot be
-    ///   loaded by whisper.cpp, or `TranscriptionError.busyTranscribing` if
-    ///   a transcription is currently in progress.
-    func loadModel(_ model: WhisperModel) throws {
+    /// - Parameters:
+    ///   - model: The whisper model whose local file should be loaded.
+    ///   - completion: Called on the main queue when loading finishes or fails.
+    func loadModel(_ model: WhisperModel, completion: ((Result<Void, Error>) -> Void)? = nil) {
         if isTranscribing {
-            throw TranscriptionError.busyTranscribing
+            completion?(.failure(TranscriptionError.busyTranscribing))
+            return
         }
 
-        // Synchronously execute on the engine queue to ensure no transcription
-        // is using the context while we swap it
-        var loadError: Error?
-        engineQueue.sync {
-            if let oldContext = whisperContext {
+        isLoading = true
+        loadedModelName = nil
+
+        // Load asynchronously on the engine queue so it doesn't block the main thread
+        engineQueue.async { [weak self] in
+            if let oldContext = self?.whisperContext {
                 whisper_free(oldContext)
-                whisperContext = nil
-                loadedModelName = nil
+                self?.whisperContext = nil
                 NSLog("Unloaded whisper model")
             }
 
             let path = model.localFilePath.path
             var params = whisper_context_default_params()
             guard let context = whisper_init_from_file_with_params(path, params) else {
-                loadError = TranscriptionError.modelLoadFailed(model.name)
+                DispatchQueue.main.async {
+                    self?.isLoading = false
+                    completion?(.failure(TranscriptionError.modelLoadFailed(model.name)))
+                }
                 return
             }
-            whisperContext = context
-            loadedModelName = model.name
-            NSLog("Loaded whisper model: \(model.name)")
-        }
 
-        if let error = loadError {
-            throw error
+            self?.whisperContext = context
+            DispatchQueue.main.async {
+                self?.loadedModelName = model.name
+                self?.isLoading = false
+                NSLog("Loaded whisper model: \(model.name)")
+                completion?(.success(()))
+            }
         }
     }
 
+    /// Whether a model is currently being loaded.
+    private(set) var isLoading = false
+
     /// Frees the currently loaded model from memory.
     ///
-    /// Blocks until any in-progress transcription completes before freeing.
+    /// Dispatches to the engine queue so it waits for any in-progress
+    /// transcription to complete before freeing.
     func unloadModel() {
-        engineQueue.sync {
-            if let context = whisperContext {
+        engineQueue.async { [weak self] in
+            if let context = self?.whisperContext {
                 whisper_free(context)
-                whisperContext = nil
-                loadedModelName = nil
+                self?.whisperContext = nil
+                DispatchQueue.main.async {
+                    self?.loadedModelName = nil
+                }
                 NSLog("Unloaded whisper model")
             }
         }

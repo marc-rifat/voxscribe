@@ -258,11 +258,13 @@ final class StatusBarController {
                 onModelChanged: { [weak self] model in
                     guard let self = self else { return }
                     NSLog("Switching to model: \(model.name)")
-                    do {
-                        try self.transcriptionEngine.loadModel(model)
-                        NSLog("Model switched to: \(model.name)")
-                    } catch {
-                        NSLog("Failed to switch model: \(error.localizedDescription)")
+                    self.transcriptionEngine.loadModel(model) { result in
+                        switch result {
+                        case .success:
+                            NSLog("Model switched to: \(model.name)")
+                        case .failure(let error):
+                            NSLog("Failed to switch model: \(error.localizedDescription)")
+                        }
                     }
                 },
                 onClose: { [weak self] in

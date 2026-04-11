@@ -93,22 +93,21 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         NSLog("Found model in allModels: \(String(describing: selectedModel?.name))")
 
         if let model = selectedModel, modelManager.isModelDownloaded(model) {
-            do {
-                try transcriptionEngine.loadModel(model)
-                return
-            } catch {
-                NSLog("Failed to load selected model: \(error.localizedDescription)")
+            transcriptionEngine.loadModel(model) { result in
+                if case .failure(let error) = result {
+                    NSLog("Failed to load selected model: \(error.localizedDescription)")
+                }
             }
+            return
         }
 
         // Fallback to smallest downloaded model
         if let fallback = modelManager.smallestDownloadedModel() {
             settings.selectedModelName = fallback.name
-            do {
-                try transcriptionEngine.loadModel(fallback)
-                NSLog("Fell back to model: \(fallback.name)")
-            } catch {
-                NSLog("Failed to load fallback model: \(error.localizedDescription)")
+            transcriptionEngine.loadModel(fallback) { result in
+                if case .failure(let error) = result {
+                    NSLog("Failed to load fallback model: \(error.localizedDescription)")
+                }
             }
         } else {
             NSLog("No whisper models downloaded. User must download one from Settings.")
