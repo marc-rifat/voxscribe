@@ -1,17 +1,17 @@
 import Cocoa
-import Foundation
+import Carbon
 
 /// Manages a global keyboard shortcut that works even when the app is not focused.
 ///
-/// Uses a `CGEvent` tap to intercept key events system-wide. The hotkey
-/// is configurable via a key code and modifier flags stored in `AppSettings`.
+/// Uses Carbon's `RegisterEventHotKey` API for reliable system-wide hotkey
+/// detection that works with all modifier combinations including Cmd+Delete.
 ///
 /// - Important: Requires Accessibility permissions in System Settings.
 final class GlobalHotkeyManager {
-    private var eventTap: CFMachPort?
-    private var runLoopSource: CFRunLoopSource?
     private let settings: AppSettings
     private var handler: (() -> Void)?
+    private var hotKeyRef: EventHotKeyRef?
+    private var eventHandler: EventHandlerRef?
 
     /// Creates a GlobalHotkeyManager.
     ///
@@ -26,66 +26,93 @@ final class GlobalHotkeyManager {
     /// is called on the main thread.
     ///
     /// - Parameter handler: The closure to invoke when the hotkey is pressed.
-    /// - Returns: `true` if the event tap was created successfully,
-    ///   `false` if accessibility permissions are missing.
+    /// - Returns: `true` if the hotkey was registered successfully.
     @discardableResult
     func register(handler: @escaping () -> Void) -> Bool {
         self.handler = handler
         unregister()
 
-        let eventMask: CGEventMask = (1 << CGEventType.keyDown.rawValue)
-
-        guard let tap = CGEvent.tapCreate(
-            tap: .cgSessionEventTap,
-            place: .headInsertEventTap,
-            options: .defaultTap,
-            eventsOfInterest: eventMask,
-            callback: globalHotkeyCallback,
-            userInfo: Unmanaged.passUnretained(self).toOpaque()
-        ) else {
-            NSLog("Failed to create event tap. Check Accessibility permissions.")
+        guard let keyCode = settings.hotkeyKeyCode else {
+            NSLog("Global hotkey: no key code configured")
             return false
         }
 
-        eventTap = tap
-        runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, tap, 0)
-        CFRunLoopAddSource(CFRunLoopGetMain(), runLoopSource, .commonModes)
-        CGEvent.tapEnable(tap: tap, enable: true)
-        NSLog("Global hotkey registered")
+        let modifierFlags = settings.hotkeyModifierFlags ?? 0
+        let carbonModifiers = carbonModifierFlags(from: modifierFlags)
+
+        // Install event handler for hotkey events
+        var eventType = EventTypeSpec(
+            eventClass: OSType(kEventClassKeyboard),
+            eventKind: UInt32(kEventHotKeyPressed)
+        )
+
+        let selfPtr = Unmanaged.passUnretained(self).toOpaque()
+
+        let status = InstallEventHandler(
+            GetApplicationEventTarget(),
+            { (_, event, userData) -> OSStatus in
+                guard let userData = userData else { return OSStatus(eventNotHandledErr) }
+                let manager = Unmanaged<GlobalHotkeyManager>.fromOpaque(userData).takeUnretainedValue()
+                manager.fireHandler()
+                return noErr
+            },
+            1,
+            &eventType,
+            selfPtr,
+            &eventHandler
+        )
+
+        guard status == noErr else {
+            NSLog("Global hotkey: failed to install event handler (status: \(status))")
+            return false
+        }
+
+        // Register the hotkey
+        let hotKeyID = EventHotKeyID(signature: OSType(0x564F5853), id: 1) // "VOXS"
+        var hotKeyIDVar = hotKeyID
+
+        let regStatus = RegisterEventHotKey(
+            UInt32(keyCode),
+            carbonModifiers,
+            hotKeyIDVar,
+            GetApplicationEventTarget(),
+            0,
+            &hotKeyRef
+        )
+
+        guard regStatus == noErr else {
+            NSLog("Global hotkey: failed to register hotkey (status: \(regStatus))")
+            return false
+        }
+
+        NSLog("Global hotkey registered (keyCode: \(keyCode), modifiers: \(carbonModifiers))")
         return true
     }
 
     /// Removes the global hotkey listener and cleans up resources.
     func unregister() {
-        if let source = runLoopSource {
-            CFRunLoopRemoveSource(CFRunLoopGetMain(), source, .commonModes)
+        if let ref = hotKeyRef {
+            UnregisterEventHotKey(ref)
+            hotKeyRef = nil
         }
-        if let tap = eventTap {
-            CGEvent.tapEnable(tap: tap, enable: false)
+        if let handler = eventHandler {
+            RemoveEventHandler(handler)
+            eventHandler = nil
         }
-        eventTap = nil
-        runLoopSource = nil
     }
 
-    /// Checks whether the given key event matches the configured hotkey.
+    /// Converts NSEvent modifier flags to Carbon modifier flags.
     ///
-    /// - Parameter event: The CGEvent to check.
-    /// - Returns: `true` if the event's key code and modifiers match the settings.
-    fileprivate func matchesHotkey(_ event: CGEvent) -> Bool {
-        guard let keyCode = settings.hotkeyKeyCode,
-              let modifierFlags = settings.hotkeyModifierFlags else {
-            return false
-        }
-
-        let eventKeyCode = Int(event.getIntegerValueField(.keyboardEventKeycode))
-        let eventModifiers = event.flags.rawValue & (
-            CGEventFlags.maskCommand.rawValue |
-            CGEventFlags.maskShift.rawValue |
-            CGEventFlags.maskAlternate.rawValue |
-            CGEventFlags.maskControl.rawValue
-        )
-
-        return eventKeyCode == keyCode && eventModifiers == UInt64(modifierFlags)
+    /// - Parameter flags: The NSEvent modifier flags as a raw UInt value.
+    /// - Returns: The equivalent Carbon modifier flags.
+    private func carbonModifierFlags(from flags: UInt) -> UInt32 {
+        let nsFlags = NSEvent.ModifierFlags(rawValue: UInt(flags))
+        var carbon: UInt32 = 0
+        if nsFlags.contains(.command) { carbon |= UInt32(cmdKey) }
+        if nsFlags.contains(.option) { carbon |= UInt32(optionKey) }
+        if nsFlags.contains(.control) { carbon |= UInt32(controlKey) }
+        if nsFlags.contains(.shift) { carbon |= UInt32(shiftKey) }
+        return carbon
     }
 
     /// Invokes the registered handler on the main thread.
@@ -98,27 +125,4 @@ final class GlobalHotkeyManager {
     deinit {
         unregister()
     }
-}
-
-/// C-function callback for the CGEvent tap. Forwards matching hotkey events
-/// to the GlobalHotkeyManager instance.
-private func globalHotkeyCallback(
-    proxy: CGEventTapProxy,
-    type: CGEventType,
-    event: CGEvent,
-    userInfo: UnsafeMutableRawPointer?
-) -> Unmanaged<CGEvent>? {
-    guard type == .keyDown,
-          let userInfo = userInfo else {
-        return Unmanaged.passRetained(event)
-    }
-
-    let manager = Unmanaged<GlobalHotkeyManager>.fromOpaque(userInfo).takeUnretainedValue()
-
-    if manager.matchesHotkey(event) {
-        manager.fireHandler()
-        return nil  // consume the event
-    }
-
-    return Unmanaged.passRetained(event)
 }

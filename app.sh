@@ -174,6 +174,9 @@ install_app() {
     echo -e "  ${CYAN}Installing to ${INSTALL_DIR}...${NC}"
     cp -R "$built_app" "${INSTALL_DIR}/${APP_NAME}.app"
     echo -e "  ${GREEN}Installed ${APP_NAME} to ${INSTALL_DIR}/${APP_NAME}.app${NC}"
+    echo -e "  ${CYAN}Launching ${APP_NAME}...${NC}"
+    open "${INSTALL_DIR}/${APP_NAME}.app"
+    echo -e "  ${GREEN}${APP_NAME} is running${NC}"
     pause
 }
 
@@ -439,7 +442,7 @@ show_status() {
 # ============================================================
 
 main_options=(
-    "Build & Install"
+    "Build & Install & Start"
     "Uninstall"
     "Run"
     "Run (Debug with logs)"
