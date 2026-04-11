@@ -255,6 +255,16 @@ final class StatusBarController {
                         self?.toggleRecording()
                     }
                 },
+                onModelChanged: { [weak self] model in
+                    guard let self = self else { return }
+                    NSLog("Switching to model: \(model.name)")
+                    do {
+                        try self.transcriptionEngine.loadModel(model)
+                        NSLog("Model switched to: \(model.name)")
+                    } catch {
+                        NSLog("Failed to switch model: \(error.localizedDescription)")
+                    }
+                },
                 onClose: { [weak self] in
                     self?.settingsPanel?.performClose(nil)
                     self?.settingsPanel = nil

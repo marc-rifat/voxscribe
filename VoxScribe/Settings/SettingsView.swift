@@ -11,6 +11,7 @@ struct SettingsView: View {
     @ObservedObject var settings: AppSettings
     let clipboardHistory: ClipboardHistory
     let onHotkeyChanged: () -> Void
+    var onModelChanged: ((WhisperModel) -> Void)?
     var onClose: (() -> Void)?
 
     @State private var hotkeyKeyCode: Int?
@@ -81,7 +82,10 @@ struct SettingsView: View {
                                     Image(systemName: "checkmark.circle.fill")
                                         .foregroundColor(.green)
                                 } else {
-                                    Button(action: { settings.selectedModelName = model.name }) {
+                                    Button(action: {
+                                        settings.selectedModelName = model.name
+                                        onModelChanged?(model)
+                                    }) {
                                         Image(systemName: "arrow.right.circle")
                                             .foregroundColor(.blue)
                                     }
