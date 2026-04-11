@@ -91,6 +91,11 @@ final class StatusBarController {
 
     /// Starts audio recording and transitions the icon to the recording state.
     private func startRecording() {
+        if transcriptionEngine.loadedModelName == nil {
+            showNoModelAlert()
+            return
+        }
+
         if let deviceUID = settings.audioInputDeviceID {
             let device = audioDeviceManager.inputDevices.first { $0.uid == deviceUID }
             audioRecorder.inputDeviceID = device?.id
@@ -210,6 +215,22 @@ final class StatusBarController {
     private func stopAnimation() {
         animationTimer?.invalidate()
         animationTimer = nil
+    }
+
+    /// Shows an alert telling the user to download a model, with a button
+    /// to open Settings.
+    private func showNoModelAlert() {
+        let alert = NSAlert()
+        alert.messageText = "No Model Installed"
+        alert.informativeText = "Download a whisper model from Settings before recording."
+        alert.alertStyle = .warning
+        alert.addButton(withTitle: "Open Settings")
+        alert.addButton(withTitle: "Cancel")
+        NSApp.activate(ignoringOtherApps: true)
+        let response = alert.runModal()
+        if response == .alertFirstButtonReturn {
+            openSettings()
+        }
     }
 
     /// Sends a macOS user notification.
