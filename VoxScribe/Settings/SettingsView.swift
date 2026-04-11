@@ -105,7 +105,18 @@ struct SettingsView: View {
                             } else {
                                 Button(action: {
                                     modelManager.downloadModel(model) { result in
-                                        if case .failure(let error) = result {
+                                        switch result {
+                                        case .success:
+                                            // Auto-select if no model is currently active
+                                            if settings.selectedModelName.isEmpty ||
+                                               !modelManager.isModelDownloaded(
+                                                   WhisperModel.allModels.first { $0.name == settings.selectedModelName } ??
+                                                   model
+                                               ) {
+                                                settings.selectedModelName = model.name
+                                                onModelChanged?(model)
+                                            }
+                                        case .failure(let error):
                                             NSLog("Download failed: \(error.localizedDescription)")
                                         }
                                     }

@@ -91,6 +91,10 @@ final class StatusBarController {
 
     /// Starts audio recording and transitions the icon to the recording state.
     private func startRecording() {
+        if transcriptionEngine.isLoading {
+            NSLog("Model is still loading, please wait")
+            return
+        }
         if transcriptionEngine.loadedModelName == nil {
             showNoModelAlert()
             return
