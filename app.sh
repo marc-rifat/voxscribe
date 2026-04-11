@@ -120,11 +120,52 @@ kill_app() {
     fi
 }
 
+ensure_build_tools() {
+    if ! command -v brew &>/dev/null; then
+        echo -e "  ${RED}Homebrew is required but not installed.${NC}"
+        echo -e "  ${DIM}Install it from https://brew.sh${NC}"
+        return 1
+    fi
+
+    if ! command -v xcodegen &>/dev/null; then
+        echo -e "  ${YELLOW}XcodeGen not found. Installing via Homebrew...${NC}"
+        brew install xcodegen || return 1
+        echo -e "  ${GREEN}XcodeGen installed${NC}"
+    fi
+
+    if ! command -v xcodebuild &>/dev/null; then
+        echo -e "  ${RED}xcodebuild not found. Install Xcode from the App Store.${NC}"
+        return 1
+    fi
+
+    local dev_dir
+    dev_dir=$(xcode-select -p 2>/dev/null)
+    if [[ "$dev_dir" == */CommandLineTools ]]; then
+        echo -e "  ${YELLOW}Xcode developer tools pointing to Command Line Tools.${NC}"
+        echo -e "  ${YELLOW}Switching to full Xcode...${NC}"
+        sudo xcode-select -s /Applications/Xcode.app/Contents/Developer || return 1
+        echo -e "  ${GREEN}Switched to Xcode${NC}"
+    fi
+
+    return 0
+}
+
 build_app() {
     echo ""
     echo -e "  ${CYAN}Building ${APP_NAME}...${NC}"
     echo ""
+    if ! ensure_build_tools; then
+        echo -e "  ${RED}Missing required build tools.${NC}"
+        return 1
+    fi
     cd "$PROJECT_DIR"
+
+    if [ ! -f "libs/whisper.cpp/src/whisper.cpp" ]; then
+        echo -e "  ${YELLOW}whisper.cpp submodule not initialized. Fetching...${NC}"
+        git submodule update --init --recursive || return 1
+        echo -e "  ${GREEN}Submodule initialized${NC}"
+    fi
+
     xcodegen generate 2>&1 | tail -1
 
     local build_log
@@ -188,6 +229,7 @@ install_app() {
 
     echo -e "  ${CYAN}Installing to ${INSTALL_DIR}...${NC}"
     cp -R "$built_app" "${INSTALL_DIR}/${APP_NAME}.app"
+    xattr -cr "${INSTALL_DIR}/${APP_NAME}.app"
     echo -e "  ${GREEN}Installed ${APP_NAME} to ${INSTALL_DIR}/${APP_NAME}.app${NC}"
     echo -e "  ${CYAN}Launching ${APP_NAME}...${NC}"
     open "${INSTALL_DIR}/${APP_NAME}.app"
