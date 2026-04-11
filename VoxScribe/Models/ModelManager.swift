@@ -46,6 +46,7 @@ final class ModelManager: ObservableObject {
             throw ModelManagerError.modelNotFound(model.name)
         }
         try FileManager.default.removeItem(at: path)
+        objectWillChange.send()
     }
 
     /// Downloads a model from its remote URL to the storage directory.

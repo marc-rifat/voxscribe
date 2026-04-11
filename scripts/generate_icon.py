@@ -192,24 +192,6 @@ def create_icon(size: int) -> Image.Image:
             width=wave_thickness,
         )
 
-    # "VoxScribe" text at bottom (skip on small sizes)
-    if size < 128:
-        return img
-    text_y = stand_bottom + int(size * 0.04)
-    font_size = int(size * 0.065)
-    try:
-        font = ImageFont.truetype("/System/Library/Fonts/SFProDisplay-Medium.otf", font_size)
-    except (OSError, IOError):
-        try:
-            font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", font_size)
-        except (OSError, IOError):
-            font = ImageFont.load_default()
-
-    text = "VoxScribe"
-    bbox = draw.textbbox((0, 0), text, font=font)
-    text_width = bbox[2] - bbox[0]
-    text_x = center_x - text_width // 2
-    draw.text((text_x, text_y), text, fill=(180, 190, 220, 200), font=font)
 
     return img
 

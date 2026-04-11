@@ -9,6 +9,7 @@ struct SettingsView: View {
     @ObservedObject var modelManager: ModelManager
     @ObservedObject var audioDeviceManager: AudioDeviceManager
     @ObservedObject var settings: AppSettings
+    let clipboardHistory: ClipboardHistory
     let onHotkeyChanged: () -> Void
     var onClose: (() -> Void)?
 
@@ -21,18 +22,6 @@ struct SettingsView: View {
     var body: some View {
         ScrollView {
         VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                Text("VoxScribe Settings")
-                    .font(.headline)
-                Spacer()
-                Button(action: { onClose?() }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .font(.title2)
-                        .foregroundColor(.secondary)
-                }
-                .buttonStyle(.plain)
-            }
-
             // Hotkey Section
             GroupBox(label: Text("Global Hotkey")) {
                 VStack(alignment: .leading, spacing: 8) {
@@ -89,29 +78,35 @@ struct SettingsView: View {
                                     .frame(width: 35)
                             } else if modelManager.isModelDownloaded(model) {
                                 if settings.selectedModelName == model.name {
-                                    Text("Active")
-                                        .font(.caption)
+                                    Image(systemName: "checkmark.circle.fill")
                                         .foregroundColor(.green)
                                 } else {
-                                    Button("Use") {
-                                        settings.selectedModelName = model.name
+                                    Button(action: { settings.selectedModelName = model.name }) {
+                                        Image(systemName: "arrow.right.circle")
+                                            .foregroundColor(.blue)
                                     }
-                                    .buttonStyle(.borderless)
+                                    .buttonStyle(.plain)
+                                    .help("Use this model")
                                 }
-                                Button("Delete") {
-                                    try? modelManager.deleteModel(model)
+                                Button(action: { try? modelManager.deleteModel(model) }) {
+                                    Image(systemName: "trash")
+                                        .foregroundColor(.red)
                                 }
-                                .buttonStyle(.borderless)
-                                .foregroundColor(.red)
+                                .buttonStyle(.plain)
+                                .help("Delete this model")
                             } else {
-                                Button("Download") {
+                                Button(action: {
                                     modelManager.downloadModel(model) { result in
                                         if case .failure(let error) = result {
                                             NSLog("Download failed: \(error.localizedDescription)")
                                         }
                                     }
+                                }) {
+                                    Image(systemName: "arrow.down.circle")
+                                        .foregroundColor(.blue)
                                 }
-                                .buttonStyle(.borderless)
+                                .buttonStyle(.plain)
+                                .help("Download this model")
                             }
                         }
                         if model.id != WhisperModel.allModels.last?.id {
@@ -134,10 +129,12 @@ struct SettingsView: View {
                             }
                         }
                     Spacer()
-                    Button("Clear All") {
-                        // This will be connected to the clipboard history instance
+                    Button(action: { clipboardHistory.clear() }) {
+                        Image(systemName: "trash")
+                            .foregroundColor(.red)
                     }
-                    .foregroundColor(.red)
+                    .buttonStyle(.plain)
+                    .help("Clear all history")
                 }
                 .padding(4)
             }
@@ -147,9 +144,19 @@ struct SettingsView: View {
                 .onChange(of: launchAtLogin) { newValue in
                     settings.launchAtLogin = newValue
                     if newValue {
-                        try? SMAppService.mainApp.register()
+                        do {
+                            try SMAppService.mainApp.register()
+                            NSLog("Launch at login: registered successfully")
+                        } catch {
+                            NSLog("Launch at login: registration failed - \(error.localizedDescription)")
+                        }
                     } else {
-                        try? SMAppService.mainApp.unregister()
+                        do {
+                            try SMAppService.mainApp.unregister()
+                            NSLog("Launch at login: unregistered successfully")
+                        } catch {
+                            NSLog("Launch at login: unregistration failed - \(error.localizedDescription)")
+                        }
                     }
                 }
         }

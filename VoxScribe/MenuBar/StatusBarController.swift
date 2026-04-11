@@ -102,7 +102,6 @@ final class StatusBarController {
             try audioRecorder.startRecording()
             appState = .recording
             updateIcon()
-            startRecordingAnimation()
             NSLog("Recording STARTED")
         } catch {
             NSLog("Failed to start recording: \(error.localizedDescription)")
@@ -156,66 +155,61 @@ final class StatusBarController {
         sendNotification(title: "VoxScribe", body: "Copied to clipboard")
     }
 
+    /// Creates a colored non-template menu bar icon from an SF Symbol.
+    ///
+    /// macOS forces template rendering for menu bar icons, so this renders
+    /// the symbol into a bitmap with the desired color and marks it non-template.
+    ///
+    /// - Parameters:
+    ///   - symbolName: The SF Symbol name.
+    ///   - color: The tint color.
+    /// - Returns: A non-template NSImage rendered in the given color.
+    private func coloredIcon(_ symbolName: String, color: NSColor) -> NSImage? {
+        guard let symbol = NSImage(systemSymbolName: symbolName, accessibilityDescription: nil) else {
+            return nil
+        }
+        let config = NSImage.SymbolConfiguration(pointSize: 14, weight: .regular)
+        guard let configured = symbol.withSymbolConfiguration(config) else { return nil }
+        let image = NSImage(size: configured.size, flipped: false) { rect in
+            configured.draw(in: rect)
+            color.set()
+            rect.fill(using: .sourceAtop)
+            return true
+        }
+        image.isTemplate = false
+        return image
+    }
+
     /// Updates the menu bar icon based on the current app state.
     private func updateIcon() {
         guard let button = statusItem.button else { return }
         switch appState {
         case .idle:
-            if let image = NSImage(systemSymbolName: "mic", accessibilityDescription: "VoxScribe - idle") {
-                button.image = image
-            } else {
-                button.title = "MIC"
-            }
+            button.image = NSImage(systemSymbolName: "mic", accessibilityDescription: "VoxScribe")
         case .recording:
-            if let image = NSImage(systemSymbolName: "mic.fill", accessibilityDescription: "VoxScribe - recording") {
-                button.image = image
-            } else {
-                button.title = "REC"
-            }
+            button.image = coloredIcon("mic.fill", color: .systemRed)
         case .transcribing:
-            if let image = NSImage(systemSymbolName: "waveform", accessibilityDescription: "VoxScribe - transcribing") {
-                button.image = image
-            } else {
-                button.title = "..."
-            }
+            button.image = coloredIcon("waveform", color: .systemGreen)
         }
     }
 
-    /// Starts the pulsing red animation for the recording state.
-    private func startRecordingAnimation() {
-        stopAnimation()
-        var isRed = true
-        animationTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
-            guard let button = self?.statusItem.button else { return }
-            if isRed {
-                button.image = NSImage(
-                    systemSymbolName: "mic.fill",
-                    accessibilityDescription: "VoxScribe - recording"
-                )
-                button.contentTintColor = .systemRed
-            } else {
-                button.contentTintColor = nil
-            }
-            isRed.toggle()
-        }
-    }
-
-    /// Starts the pulsing animation for the transcribing state.
+    /// Animates the menu bar icon during transcription by cycling through
+    /// waveform symbols in orange.
     private func startTranscribingAnimation() {
         stopAnimation()
-        var isHighlighted = true
+        let icons = ["waveform.path.ecg", "waveform", "waveform.path"]
+        var index = 0
         animationTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: true) { [weak self] _ in
             guard let button = self?.statusItem.button else { return }
-            button.contentTintColor = isHighlighted ? .systemOrange : nil
-            isHighlighted.toggle()
+            button.image = self?.coloredIcon(icons[index % icons.count], color: .systemGreen)
+            index += 1
         }
     }
 
-    /// Stops any running icon animation and resets the tint color.
+    /// Stops any running icon animation.
     private func stopAnimation() {
         animationTimer?.invalidate()
         animationTimer = nil
-        statusItem.button?.contentTintColor = nil
     }
 
     /// Sends a macOS user notification.
@@ -253,6 +247,7 @@ final class StatusBarController {
                 modelManager: modelManager,
                 audioDeviceManager: audioDeviceManager,
                 settings: settings,
+                clipboardHistory: clipboardHistory,
                 onHotkeyChanged: { [weak self] in
                     guard let self = self else { return }
                     self.hotkeyManager?.unregister()
