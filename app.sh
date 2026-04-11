@@ -126,20 +126,30 @@ build_app() {
     echo ""
     cd "$PROJECT_DIR"
     xcodegen generate 2>&1 | tail -1
+
+    local build_log
+    build_log=$(mktemp)
     xcodebuild build \
         -project ${APP_NAME}.xcodeproj \
         -scheme ${APP_NAME} \
         -destination 'platform=macOS' \
-        2>&1 | grep -E '(error:|BUILD)' | grep -v "whisper.cpp" | tail -10
+        2>&1 | tee "$build_log" | grep -E '(error:|warning:.*Metal|BUILD)' | tail -20
+    local build_exit=${PIPESTATUS[0]}
 
     local built_app
     built_app=$(get_built_app)
-    if [ -n "$built_app" ] && [ -d "$built_app" ]; then
+    local executable="${built_app}/Contents/MacOS/${APP_NAME}"
+    if [ "$build_exit" -eq 0 ] && [ -x "$executable" ]; then
         echo ""
         echo -e "  ${GREEN}Build succeeded${NC}"
+        rm -f "$build_log"
+        return 0
     else
         echo ""
-        echo -e "  ${RED}Build failed${NC}"
+        echo -e "  ${RED}Build failed. Errors:${NC}"
+        grep -i 'error:' "$build_log" | grep -v "whisper.cpp" | tail -15
+        rm -f "$build_log"
+        return 1
     fi
 }
 
@@ -151,14 +161,19 @@ install_app() {
 
     local built_app
     built_app=$(get_built_app)
+    local executable="${built_app}/Contents/MacOS/${APP_NAME}"
 
-    if [ -z "$built_app" ] || [ ! -d "$built_app" ]; then
+    if [ -z "$built_app" ] || [ ! -x "$executable" ]; then
         echo -e "  ${YELLOW}No build found. Building first...${NC}"
-        build_app
+        if ! build_app; then
+            pause
+            return
+        fi
         built_app=$(get_built_app)
+        executable="${built_app}/Contents/MacOS/${APP_NAME}"
     fi
 
-    if [ ! -d "$built_app" ]; then
+    if [ ! -x "$executable" ]; then
         echo -e "  ${RED}Build failed. Cannot install.${NC}"
         pause
         return
@@ -241,16 +256,28 @@ run_app_debug() {
     local built_app
     built_app=$(get_built_app)
 
-    if [ -z "$built_app" ] || [ ! -d "$built_app" ]; then
+    local executable="${built_app}/Contents/MacOS/${APP_NAME}"
+
+    if [ -z "$built_app" ] || [ ! -x "$executable" ]; then
         echo -e "  ${YELLOW}No debug build found. Building first...${NC}"
-        build_app
+        if ! build_app; then
+            pause
+            return
+        fi
         built_app=$(get_built_app)
+        executable="${built_app}/Contents/MacOS/${APP_NAME}"
+    fi
+
+    if [ ! -x "$executable" ]; then
+        echo -e "  ${RED}Build failed. Cannot run.${NC}"
+        pause
+        return
     fi
 
     kill_app
     echo -e "  ${GREEN}Launching in debug mode... Press Ctrl+C to stop${NC}"
     echo -e "  ${DIM}---${NC}"
-    "$built_app/Contents/MacOS/${APP_NAME}" 2>&1
+    "$executable" 2>&1
 }
 
 clean_build() {
@@ -266,6 +293,7 @@ clean_build() {
         echo -e "  ${GREEN}Removed DerivedData${NC}"
     fi
     build_app
+    # build_app already prints success/failure
     pause
 }
 
@@ -397,10 +425,11 @@ update_whisper_cpp() {
 
     confirm_action "Rebuild the app now?"
     if [ $MENU_RESULT -eq 0 ]; then
-        build_app
-        confirm_action "Install to /Applications?"
-        if [ $MENU_RESULT -eq 0 ]; then
-            install_app
+        if build_app; then
+            confirm_action "Install to /Applications?"
+            if [ $MENU_RESULT -eq 0 ]; then
+                install_app
+            fi
         fi
     fi
 
@@ -443,7 +472,7 @@ show_status() {
 
     local built_app
     built_app=$(get_built_app)
-    if [ -n "$built_app" ] && [ -d "$built_app" ]; then
+    if [ -n "$built_app" ] && [ -x "${built_app}/Contents/MacOS/${APP_NAME}" ]; then
         echo -e "  Debug build: ${GREEN}YES${NC}"
     else
         echo -e "  Debug build: ${DIM}NO${NC}"
