@@ -51,6 +51,7 @@
 		BC00855978D3F07EA58F54CD /* AudioDeviceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C95123BE0EFEE5CCFCE3DB /* AudioDeviceManager.swift */; };
 		BD4FD8977AF69C56AD5D3143 /* sgemm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B6C3F11F673FB6A713B7A3C2 /* sgemm.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
 		C63B3866BD1A7C1E85CAA6AD /* ggml-cpu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 15BCFA70A54EB119EDCC1195 /* ggml-cpu.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		C6BDF054FB791C6159FCC600 /* MenuBarPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03A6DDB3BACACDD265DD4921 /* MenuBarPanelView.swift */; };
 		CB75E519947EF54B279EEDA9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664120FE14C02D6F2A1DCF33 /* main.swift */; };
 		D0E747D6CAA9AEC5C02DB19C /* WhisperModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1847C24224B397B1B3E31C46 /* WhisperModelTests.swift */; };
 		D80A7DC5A4ADBCFF260B80F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A23B4A28496D4F2DD53F8B7 /* Assets.xcassets */; };
@@ -75,6 +76,7 @@
 
 /* Begin PBXFileReference section */
 		009BCE3EC495A8BAC565CF0E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		03A6DDB3BACACDD265DD4921 /* MenuBarPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPanelView.swift; sourceTree = "<group>"; };
 		06AD13B3432EF5B344864DC9 /* AppSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsTests.swift; sourceTree = "<group>"; };
 		090670F2DE4CC1095E17DB74 /* HistoryEntryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryEntryTests.swift; sourceTree = "<group>"; };
 		0A0FFCFEA12E3FBBE69A215E /* ClipboardHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardHistoryTests.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 		03AB42A9788D2101900F27D9 /* MenuBar */ = {
 			isa = PBXGroup;
 			children = (
+				03A6DDB3BACACDD265DD4921 /* MenuBarPanelView.swift */,
 				A3A9E382FD9987248C8EA690 /* MenuBuilder.swift */,
 				142E4213963715A27269DE37 /* StatusBarController.swift */,
 			);
@@ -443,6 +446,7 @@
 				6586093216172541CAA5DE7A /* GlobalHotkeyManager.swift in Sources */,
 				3A844CD4517151CC48F1160F /* HistoryEntry.swift in Sources */,
 				34014333E4771E54AC2775ED /* HotkeyRecorderView.swift in Sources */,
+				C6BDF054FB791C6159FCC600 /* MenuBarPanelView.swift in Sources */,
 				B1682E11D6A576E8FBFB7CBF /* MenuBuilder.swift in Sources */,
 				EE4B3F196EFE3339D7AAE77A /* ModelManager.swift in Sources */,
 				788988351EB1F0E5992614F9 /* SettingsView.swift in Sources */,
