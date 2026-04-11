@@ -267,6 +267,23 @@ final class StatusBarController {
                         }
                     }
                 },
+                onModelDeleted: { [weak self] model in
+                    guard let self = self else { return }
+                    // If the deleted model was the active one, unload it
+                    if self.transcriptionEngine.loadedModelName == model.name {
+                        NSLog("Active model '\(model.name)' was deleted, unloading")
+                        self.transcriptionEngine.unloadModel()
+                        // Try to fall back to another downloaded model
+                        if let fallback = self.modelManager.smallestDownloadedModel() {
+                            self.settings.selectedModelName = fallback.name
+                            self.transcriptionEngine.loadModel(fallback) { result in
+                                if case .success = result {
+                                    NSLog("Fell back to model: \(fallback.name)")
+                                }
+                            }
+                        }
+                    }
+                },
                 onClose: { [weak self] in
                     self?.settingsPanel?.performClose(nil)
                     self?.settingsPanel = nil

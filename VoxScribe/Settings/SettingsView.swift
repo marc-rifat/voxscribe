@@ -12,6 +12,7 @@ struct SettingsView: View {
     let clipboardHistory: ClipboardHistory
     let onHotkeyChanged: () -> Void
     var onModelChanged: ((WhisperModel) -> Void)?
+    var onModelDeleted: ((WhisperModel) -> Void)?
     var onClose: (() -> Void)?
 
     @State private var hotkeyKeyCode: Int?
@@ -92,7 +93,10 @@ struct SettingsView: View {
                                     .buttonStyle(.plain)
                                     .help("Use this model")
                                 }
-                                Button(action: { try? modelManager.deleteModel(model) }) {
+                                Button(action: {
+                                    try? modelManager.deleteModel(model)
+                                    onModelDeleted?(model)
+                                }) {
                                     Image(systemName: "trash")
                                         .foregroundColor(.red)
                                 }
