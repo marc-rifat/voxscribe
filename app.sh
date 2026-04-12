@@ -147,6 +147,12 @@ ensure_build_tools() {
         echo -e "  ${GREEN}Switched to Xcode${NC}"
     fi
 
+    if ! xcrun metal -v &>/dev/null; then
+        echo -e "  ${YELLOW}Metal Toolchain not found. Downloading...${NC}"
+        xcodebuild -downloadComponent MetalToolchain || return 1
+        echo -e "  ${GREEN}Metal Toolchain installed${NC}"
+    fi
+
     return 0
 }
 
