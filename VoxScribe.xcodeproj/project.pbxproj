@@ -29,6 +29,7 @@
 		46AE5F19F520E01F01FF691A /* ggml.c in Sources */ = {isa = PBXBuildFile; fileRef = 771BF43F2370A816CC232FE5 /* ggml.c */; settings = {COMPILER_FLAGS = "-std=c11 -DGGML_USE_ACCELERATE"; }; };
 		5403A47DFBC374EFF8847FE3 /* ggml-backend-dl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FC80B0F8AE2371AB05321E89 /* ggml-backend-dl.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
 		5C5DBE305C944A70CB34D83A /* ops.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 30DDFDC1B3F282E7988AA2B4 /* ops.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
+		5DF4E665A0B65CFC3921C33D /* ggml-backend-meta.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2AC40C1307888BF52EBF787A /* ggml-backend-meta.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
 		644AF06AFC0ED751C0AD9785 /* ClipboardHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E8EA16CFC8B5A913DFF0237 /* ClipboardHistory.swift */; };
 		6586093216172541CAA5DE7A /* GlobalHotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE02C958E7C3090FB500815 /* GlobalHotkeyManager.swift */; };
 		7242AFAB8E9080125586C97E /* ggml-backend.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5EA34CA93355CBDC7D58E63E /* ggml-backend.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
@@ -86,6 +87,7 @@
 		15BCFA70A54EB119EDCC1195 /* ggml-cpu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-cpu.cpp"; sourceTree = "<group>"; };
 		1847C24224B397B1B3E31C46 /* WhisperModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhisperModelTests.swift; sourceTree = "<group>"; };
 		1DE02C958E7C3090FB500815 /* GlobalHotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalHotkeyManager.swift; sourceTree = "<group>"; };
+		2AC40C1307888BF52EBF787A /* ggml-backend-meta.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-backend-meta.cpp"; sourceTree = "<group>"; };
 		2DDA3A4725557A816E014DD1 /* ggml-threading.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-threading.cpp"; sourceTree = "<group>"; };
 		30DDFDC1B3F282E7988AA2B4 /* ops.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ops.cpp; sourceTree = "<group>"; };
 		3EB1DBF8B9BEC4BF82B9226C /* VoxScribe-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VoxScribe-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 			children = (
 				A33DD93AB286EDFACA962626 /* ggml-alloc.c */,
 				FC80B0F8AE2371AB05321E89 /* ggml-backend-dl.cpp */,
+				2AC40C1307888BF52EBF787A /* ggml-backend-meta.cpp */,
 				D50918514AE011E6E49A831E /* ggml-backend-reg.cpp */,
 				5EA34CA93355CBDC7D58E63E /* ggml-backend.cpp */,
 				CA829B13467298D5DDD8DDDB /* ggml-opt.cpp */,
@@ -458,6 +461,7 @@
 				F676D2637D809CEB4DAE61BE /* cpu-feats.cpp in Sources */,
 				183AEECB9BC86A75C5BC35C5 /* ggml-alloc.c in Sources */,
 				5403A47DFBC374EFF8847FE3 /* ggml-backend-dl.cpp in Sources */,
+				5DF4E665A0B65CFC3921C33D /* ggml-backend-meta.cpp in Sources */,
 				44454EA58EACE86622569A34 /* ggml-backend-reg.cpp in Sources */,
 				7242AFAB8E9080125586C97E /* ggml-backend.cpp in Sources */,
 				E77466B21CE08160264E1ACA /* ggml-cpu.c in Sources */,

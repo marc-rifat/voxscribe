@@ -45,6 +45,9 @@ targets:
       - path: libs/whisper.cpp/ggml/src/ggml-backend.cpp
         buildPhase: sources
         compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/ggml-backend-meta.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
       - path: libs/whisper.cpp/ggml/src/ggml-backend-reg.cpp
         buildPhase: sources
         compilerFlags: "-std=c++17 -DGGML_USE_CPU"
