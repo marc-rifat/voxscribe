@@ -156,6 +156,10 @@ final class StatusBarController {
     /// Copies transcription text to the clipboard, saves to history,
     /// and shows a notification.
     ///
+    /// If the transcription is empty -- no speech was recognised -- the
+    /// clipboard and history are left untouched and only a notification
+    /// is shown.
+    ///
     /// - Parameter text: The transcribed text.
     private func handleTranscriptionResult(_ text: String) {
         // An empty result means no speech was recognised. Writing it would

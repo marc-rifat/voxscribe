@@ -12,10 +12,22 @@
 # mirrors the sed substitution in ggml/src/ggml-metal/CMakeLists.txt.
 
 set -e
+set -o pipefail
 
 METAL_DIR="${SRCROOT}/libs/whisper.cpp/ggml/src/ggml-metal"
 COMMON_H="${SRCROOT}/libs/whisper.cpp/ggml/src/ggml-common.h"
 RESOURCES="${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
+
+# sed's `r` silently inserts nothing when its file is missing, while the paired
+# `d` still deletes the #include -- which would ship a shader stripped of its
+# type definitions and fail only at runtime. Upstream moves these files between
+# releases, so check them rather than trust the paths.
+for required in "${METAL_DIR}/ggml-metal.metal" "${METAL_DIR}/ggml-metal-impl.h" "${COMMON_H}"; do
+    if [ ! -f "$required" ]; then
+        echo "error: missing Metal shader input: $required" >&2
+        exit 1
+    fi
+done
 
 mkdir -p "$RESOURCES"
 
