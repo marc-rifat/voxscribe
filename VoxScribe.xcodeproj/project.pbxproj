@@ -38,7 +38,6 @@
 		8F195E750A74B4F5FA186E48 /* VoxScribeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84198B5F12056E73B799CAFF /* VoxScribeApp.swift */; };
 		94498094E720DF5C38D62827 /* VoxScribeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4357B8578B1EF2E0F21EF18E /* VoxScribeTests.swift */; };
 		98BA339A3529AE687579A7BD /* ggml-threading.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2DDA3A4725557A816E014DD1 /* ggml-threading.cpp */; settings = {COMPILER_FLAGS = "-std=c++17"; }; };
-		A2526B11B4D51FBC3E343C86 /* ggml-metal.metal in Resources */ = {isa = PBXBuildFile; fileRef = 10190FF6879F66EAAF2D53DC /* ggml-metal.metal */; };
 		A265AAF7ED2E6A34FF4BE9CB /* quants.c in Sources */ = {isa = PBXBuildFile; fileRef = 71E00E9AA4BF92A07341B923 /* quants.c */; settings = {COMPILER_FLAGS = "-std=c11"; }; };
 		A3C1BAA1231C4C2DFE21E10C /* ModelManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB2D158E94011AEE183AB3BB /* ModelManagerTests.swift */; };
 		A7B62A5394EC6365547F61D0 /* quants.c in Sources */ = {isa = PBXBuildFile; fileRef = AB48F9DF54F4914B6D39F2A9 /* quants.c */; settings = {COMPILER_FLAGS = "-std=c11"; }; };
@@ -81,7 +80,6 @@
 		06AD13B3432EF5B344864DC9 /* AppSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsTests.swift; sourceTree = "<group>"; };
 		090670F2DE4CC1095E17DB74 /* HistoryEntryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryEntryTests.swift; sourceTree = "<group>"; };
 		0A0FFCFEA12E3FBBE69A215E /* ClipboardHistoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClipboardHistoryTests.swift; sourceTree = "<group>"; };
-		10190FF6879F66EAAF2D53DC /* ggml-metal.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = "ggml-metal.metal"; sourceTree = "<group>"; };
 		12070155768A047726A12376 /* cpu-feats.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "cpu-feats.cpp"; sourceTree = "<group>"; };
 		142E4213963715A27269DE37 /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 		15BCFA70A54EB119EDCC1195 /* ggml-cpu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "ggml-cpu.cpp"; sourceTree = "<group>"; };
@@ -148,7 +146,6 @@
 				F2D758E5CB1F1AF14CFED229 /* ggml-metal-device.m */,
 				45080C0C9897872636A981CD /* ggml-metal-ops.cpp */,
 				A60C314002BC12B1E21B402A /* ggml-metal.cpp */,
-				10190FF6879F66EAAF2D53DC /* ggml-metal.metal */,
 			);
 			name = "ggml-metal";
 			path = "libs/whisper.cpp/ggml/src/ggml-metal";
@@ -364,6 +361,7 @@
 			buildPhases = (
 				28C71E70BCB09D417434D115 /* Sources */,
 				7C24E337248F264375FEA40F /* Resources */,
+				349ACD3A997F99116F30A32F /* Generate Metal Shader Resource */,
 			);
 			buildRules = (
 			);
@@ -431,11 +429,31 @@
 			buildActionMask = 2147483647;
 			files = (
 				D80A7DC5A4ADBCFF260B80F4 /* Assets.xcassets in Resources */,
-				A2526B11B4D51FBC3E343C86 /* ggml-metal.metal in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		349ACD3A997F99116F30A32F /* Generate Metal Shader Resource */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate Metal Shader Resource";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"$SRCROOT/scripts/generate_metal_shader.sh\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		28C71E70BCB09D417434D115 /* Sources */ = {
@@ -706,11 +724,6 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MTL_HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/libs/whisper.cpp/ggml/src",
-					"$(SRCROOT)/libs/whisper.cpp/ggml/include",
-					"$(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-metal",
-				);
 				OTHER_LDFLAGS = (
 					"-framework Accelerate",
 					"-framework Metal",
@@ -758,11 +771,6 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
-				MTL_HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/libs/whisper.cpp/ggml/src",
-					"$(SRCROOT)/libs/whisper.cpp/ggml/include",
-					"$(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-metal",
-				);
 				OTHER_LDFLAGS = (
 					"-framework Accelerate",
 					"-framework Metal",
