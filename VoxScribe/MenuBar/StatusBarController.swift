@@ -156,8 +156,20 @@ final class StatusBarController {
     /// Copies transcription text to the clipboard, saves to history,
     /// and shows a notification.
     ///
+    /// If the transcription is empty -- no speech was recognised -- the
+    /// clipboard and history are left untouched and only a notification
+    /// is shown.
+    ///
     /// - Parameter text: The transcribed text.
     private func handleTranscriptionResult(_ text: String) {
+        // An empty result means no speech was recognised. Writing it would
+        // clear whatever the user already had on the clipboard.
+        guard !text.isEmpty else {
+            NSLog("Transcription produced no text -- leaving clipboard untouched")
+            sendNotification(title: "VoxScribe", body: "No speech detected")
+            return
+        }
+
         NSPasteboard.general.clearContents()
         NSPasteboard.general.setString(text, forType: .string)
         clipboardHistory.addEntry(text: text)
