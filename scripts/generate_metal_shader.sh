@@ -9,7 +9,7 @@ set -e
 
 METAL_DIR="${SRCROOT}/libs/whisper.cpp/ggml/src/ggml-metal"
 COMMON_H="${SRCROOT}/libs/whisper.cpp/ggml/src/ggml-common.h"
-RESOURCES="${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
+RESOURCES="${BUILT_PRODUCTS_DIR:?}/${UNLOCALIZED_RESOURCES_FOLDER_PATH:?}"
 
 for required in "${METAL_DIR}/kernels/common.h" "${METAL_DIR}/ggml-metal-impl.h" "${COMMON_H}"; do
     if [ ! -f "$required" ]; then
@@ -18,7 +18,7 @@ for required in "${METAL_DIR}/kernels/common.h" "${METAL_DIR}/ggml-metal-impl.h"
     fi
 done
 
-rm -rf "${RESOURCES}/kernels"
+rm -rf "${RESOURCES}/kernels" "${RESOURCES}/ggml-metal.metal"
 mkdir -p "${RESOURCES}/kernels"
 
 cp "${METAL_DIR}"/kernels/*.metal "${METAL_DIR}"/kernels/*.h "${RESOURCES}/kernels/"
