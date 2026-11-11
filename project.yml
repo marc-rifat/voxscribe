@@ -28,6 +28,9 @@ targets:
       - path: libs/whisper.cpp/src/whisper.cpp
         buildPhase: sources
         compilerFlags: "-std=c++17 -DGGML_USE_ACCELERATE -DWHISPER_NO_OPENVINO"
+      - path: libs/whisper.cpp/src/aneforge/whisper-aneforge.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
       # ggml core C sources
       - path: libs/whisper.cpp/ggml/src/ggml.c
         buildPhase: sources
@@ -94,6 +97,12 @@ targets:
       - path: libs/whisper.cpp/ggml/src/ggml-cpu/hbm.cpp
         buildPhase: sources
         compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/tiled/tiled.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
+      - path: libs/whisper.cpp/ggml/src/ggml-cpu/tiled/tiled-kernel.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17"
       # ggml CPU arch-specific (ARM / Apple Silicon)
       - path: libs/whisper.cpp/ggml/src/ggml-cpu/arch/arm/cpu-feats.cpp
         buildPhase: sources
@@ -121,14 +130,20 @@ targets:
       - path: libs/whisper.cpp/ggml/src/ggml-metal/ggml-metal-device.cpp
         buildPhase: sources
         compilerFlags: "-std=c++17 -DGGML_USE_METAL"
+      - path: libs/whisper.cpp/ggml/src/ggml-metal/ggml-metal-fusion.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17 -DGGML_USE_METAL"
+      - path: libs/whisper.cpp/ggml/src/ggml-metal/ggml-metal-tuning.cpp
+        buildPhase: sources
+        compilerFlags: "-std=c++17 -DGGML_USE_METAL"
       - path: libs/whisper.cpp/ggml/src/ggml-metal/ggml-metal-device.m
         buildPhase: sources
         compilerFlags: "-DGGML_USE_METAL -fno-objc-arc"
       - path: libs/whisper.cpp/ggml/src/ggml-metal/ggml-metal-context.m
         buildPhase: sources
         compilerFlags: "-DGGML_USE_METAL -fno-objc-arc"
-      # Note: ggml-metal.metal is deliberately NOT compiled here. whisper.cpp
-      # compiles it at runtime with macros matching the detected GPU; a shader
+      # Note: ggml-metal/kernels/*.metal are deliberately NOT compiled here. whisper.cpp
+      # compiles them at runtime with macros matching the detected GPU; a shader
       # precompiled by Xcode lacks them and silently produces wrong results.
       # generate_metal_shader.sh copies the source into Resources instead.
 
@@ -154,6 +169,7 @@ targets:
           - $(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-metal
           - $(SRCROOT)/libs/whisper.cpp/ggml/src/ggml-cpu
           - $(SRCROOT)/libs/whisper.cpp/src
+          - $(SRCROOT)/libs/ggml-version
         # Link against Accelerate for BLAS acceleration
         OTHER_LDFLAGS:
           - "-framework Accelerate"
@@ -166,8 +182,6 @@ targets:
           - GGML_USE_METAL=1
           - WHISPER_NO_OPENVINO=1
           - 'WHISPER_VERSION=\"1.0.0\"'
-          - 'GGML_VERSION=\"1.0.0\"'
-          - 'GGML_COMMIT=\"local\"'
         CLANG_CXX_LANGUAGE_STANDARD: c++17
         CLANG_CXX_LIBRARY: libc++
         GCC_C_LANGUAGE_STANDARD: c11
